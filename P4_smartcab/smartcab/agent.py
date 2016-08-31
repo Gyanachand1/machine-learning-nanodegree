@@ -46,8 +46,8 @@ class LearningAgent(Agent):
 		if not this_state in self.list_of_states:
 			self.list_of_states.append(this_state)
 		self.state.append(self.list_of_states.index(this_state))
-		print self.list_of_states
-		print self.state
+		#print self.list_of_states
+		#print self.state
 			
 		#if not self.state  or not (inputs) in self.state: # if dictionary if empty : initialize it, if it has not the state: add it and increase the counter.
 			#self.state[(inputs)] = self.state_counter
@@ -57,12 +57,12 @@ class LearningAgent(Agent):
 		#print self.epsilon/float(len(self.list_of_actions))
 		# TODO: Select action according to your policy
 
-		if not np.any(self.policy):
+		if len(self.state)==1: # if we are in the first iteration 
 		#1: random action
 			action = random.choice(self.list_of_actions)
 		else:
-			print "policty applied"
-		#2_using policy to take an antion
+			#print "policty applied"
+		#2_using policy to take an action
 			probabilities = [1.-self.epsilon  , self.epsilon/float(len(self.list_of_actions)) , self.epsilon/float(len(self.list_of_actions)) , self.epsilon/float(len(self.list_of_actions)), self.epsilon/float(len(self.list_of_actions))]
 			#print probabilities
 			#probabilities = [1-e 0.25*e 0.25*e 0.25*e 0.25*e]
@@ -70,10 +70,9 @@ class LearningAgent(Agent):
 			these_actions = [self.list_of_actions[self.policy[self.state[-2]]]]  + self.list_of_actions
 			#print these_actions
 			action =  np.random.choice(these_actions, 1, p= probabilities)[0]#we access the state previous to the present one in order to choose the action to take 
-
+		
 		# Execute action and get reward
 		reward = self.env.act(self, action)
-		#self.R.resize(self.R.shape[0]+1, self.R.shape[1]+1)
 		self.R[self.state[-1]][self.list_of_actions.index(action)] = reward
 		#print self.R[range(len(self.list_of_states))][:]
 		
@@ -83,7 +82,7 @@ class LearningAgent(Agent):
 		for (next_state,next_action) in list(itertools.product(range(self.number_of_states),self.list_of_actions)):
 			temp.append( self.q[next_state][self.list_of_actions.index(next_action)]) 
 		# First approach : Q_hat(s,a) += alpha(r+gamma*max(abs(Q_hat(s',a')-Q_hat(s,a))))
-		self.q[self.state[-1]][self.list_of_actions.index(action)]+= self.alpha* (reward + self.gamma* np.max(np.abs(temp-self.q[self.state[-1]][self.list_of_actions.index(action)])))
+		self.q[self.state[-1]][self.list_of_actions.index(action)]+= self.alpha* (reward +  self.gamma*np.max(np.abs(temp-(1./self.gamma)*self.q[self.state[-1]][self.list_of_actions.index(action)])))
 				# we iterate over the possible combinations of states and actions, since any future combination is possible 
 		#print self.q[range(len(self.list_of_states))][:]
 		
@@ -104,7 +103,7 @@ def run():
     # NOTE: You can set enforce_deadline=False while debugging to allow longer trials
 
     # Now simulate it
-    sim = Simulator(e, update_delay=0.5, display=True)  # create simulator (uses pygame when display=True, if available)
+    sim = Simulator(e, update_delay=0.1, display=False)  # create simulator (uses pygame when display=True, if available)
     # NOTE: To speed up simulation, reduce update_delay and/or set display=False
 
     sim.run(n_trials=100)  # run for a specified number of trials

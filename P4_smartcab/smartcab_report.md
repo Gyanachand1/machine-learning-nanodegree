@@ -35,7 +35,7 @@ self.state.append(self.list_of_states.index(this_state))
 
 **OPTIONAL**: How many states in total exist for the smartcab in this environment? Does this number seem reasonable given that the goal of Q-Learning is to learn and make informed decisions about each state? Why or why not?
 
-> *ANSWER*: 
+>*ANSWER*: 
 >This total possible states are 64, obtained as follows: 
 
 >``` number_of_states= len([ 'red', 'green'])*len('yes', None)*len('yes', None)*len('yes', None)*len(None, 'forward', 'left', 'right')=2*2*2*2*4 =64 ``` 
@@ -51,6 +51,9 @@ With your driving agent being capable of interpreting the input information and 
 The formulas for updating Q-values can be found in this video.
 
 **QUESTION**: What changes do you notice in the agent's behavior when compared to the basic driving agent when random actions were always taken? Why is this behavior occurring?
+
+> *ANSWER*: 
+>  Random actions gave erratic movements of the car and when a policy is applied  these movements are more structured. This is happening because the action is being selected following the policy, which takes into account the reward for the action and the Q.
 
 ## Improve the Q-Learning Driving Agent
 Your final task for this project is to enhance your driving agent so that, after sufficient training, the smartcab is able to reach the destination within the allotted time safely and efficiently. Parameters in the Q-Learning algorithm, such as the learning rate (alpha), the discount factor (gamma) and the exploration rate (epsilon) all contribute to the driving agent’s ability to learn the best action for each state. To improve on the success of your smartcab:
