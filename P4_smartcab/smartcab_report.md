@@ -20,10 +20,29 @@ To complete this task, simply have your driving agent choose a random action fro
 Now that your driving agent is capable of moving around in the environment, your next task is to identify a set of states that are appropriate for modeling the smartcab and environment. The main source of state variables are the current inputs at the intersection, but not all may require representation. You may choose to explicitly define states, or use some combination of inputs as an implicit state. At each time step, process the inputs and update the agent's current state using the ```self.state``` variable. Continue with the simulation deadline enforcement ```enforce_deadline``` being set to ```False```, and observe how your driving agent now reports the change in state as the simulation progresses.
 
 **QUESTION**: What states have you identified that are appropriate for modeling the smartcab and environment? Why do you believe each of these states to be appropriate for this problem?
+>*ANSWER: 
+
+> The current state is defined by the possible combinations of: **light** ('red', 'green'), **oncoming** ('yes', None), **right**  ('yes', None), **left** ('yes', None) and **next_waypoint** (None, 'forward', 'left', 'right'). 
+
+>``` 
+this_state= (inputs['light'], inputs['oncoming'], inputs['right'], inputs['left'], self.next_waypoint) 
+if not this_state in self.list_of_sates:
+	self.list_of_states.append(this_state)
+self.state.append(self.list_of_states.index(this_state))
+```
+
+> I believe these states are appropiate for this problem since they can describe all the possible situations occurring at each intersection, taking into account both the input variables (lights and traffic) and the action that is being taken.
 
 **OPTIONAL**: How many states in total exist for the smartcab in this environment? Does this number seem reasonable given that the goal of Q-Learning is to learn and make informed decisions about each state? Why or why not?
 
 > *ANSWER*: 
+>This total possible states are 64, obtained as follows: 
+
+>``` number_of_states= len([ 'red', 'green'])*len('yes', None)*len('yes', None)*len('yes', None)*len(None, 'forward', 'left', 'right')=2*2*2*2*4 =64 ``` 
+
+> I think it is enough since it describes all the possible situations at an intersection
+                           
+
 
 
 ## Implement a Q-Learning Driving Agent
