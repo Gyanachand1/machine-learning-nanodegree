@@ -53,6 +53,7 @@ The formulas for updating Q-values can be found in this video.
 **QUESTION**: What changes do you notice in the agent's behavior when compared to the basic driving agent when random actions were always taken? Why is this behavior occurring?
 
 > *ANSWER*: 
+
 >  Random actions gave erratic movements of the car and when a policy is applied  these movements are more structured. This is happening because the action is being selected following the policy, which takes into account the reward for the action and the Q.
 
 ## Improve the Q-Learning Driving Agent
