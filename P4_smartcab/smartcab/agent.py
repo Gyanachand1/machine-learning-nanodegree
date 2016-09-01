@@ -4,6 +4,10 @@ from planner import RoutePlanner
 from simulator import Simulator
 import numpy as np
 import itertools
+import pdb # for debugging
+import os 
+import os.path
+import csv
 
 class LearningAgent(Agent):
 	"""An agent that learns to drive in the smartcab world."""
@@ -71,7 +75,6 @@ class LearningAgent(Agent):
 		self.update_q(action,t+1.)
 		#print self.q[range(len(self.list_of_states))][:]
 		
-		
 		#we select the maximum argument from the list of possible actions for the state
 		self.get_policy()
 
@@ -88,7 +91,6 @@ class LearningAgent(Agent):
 		temp = []
 		self.store_states(next_state)
 		temp= [self.q[self.list_of_states.index(next_state)][self.valid_actions.index(next_action)] for next_action in self.valid_actions] 
-		# First approach : Q_hat(s,a) += alpha(r+gamma*max(abs(Q_hat(s',a')-Q_hat(s,a))))
 		# First approach : Q_hat(s,a) += alpha(r+gamma*max(abs(Q_hat(s',a')-Q_hat(s,a))))
 		self.alpha = 1./t
 		self.q[self.state[-1]][self.valid_actions.index(action)]+= self.alpha* (reward +  self.gamma*np.max(temp-(1./self.gamma)*self.q[self.state[-1]][self.valid_actions.index(action)]))
@@ -116,25 +118,48 @@ class LearningAgent(Agent):
 		next_state = self.build_state(next_inputs, next_waypoint)
 		self.policy[self.state[-1]]= np.argmax([self.q[self.list_of_states.index(next_state)][self.valid_actions.index(next_action)] for next_action in self.valid_actions]) 
 		return self.policy[self.state[-1]]
+		
+	def write_state_to_csv(self):
+		"""Write a line to the output CSV file"""
+		# MODIFICATION
+		for filename, variable in zip(['list_of_states.csv','reward.csv','Q.csv'] , [self.list_of_states, self.q, self.R]):
+			output_file = open(filename, 'wb')# append row to previous ones
+			writer = csv.writer(output_file, delimiter='\n')
+			# example row in the CSV file
+			writer.writerow(variable)#, self.q, self.R ))
+
+def remove_file(filename):
+	try:
+		os.remove(filename)
+	except OSError:
+		pass
+		
 def run():
 	"""Run the agent for a finite number of trials."""
-
-    # Set up environment and agent
+	#pdb.set_trace()
+	
+	#os.remove(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), 'output.csv')) #reset statistics
+	#os.remove(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), 'simulation.csv')) #reset statistics 
+	list_of_files = ['simulation.csv', 'output.csv', 'list_of_states.csv','reward.csv','Q.csv']
+	for filename in list_of_files:
+		remove_file(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), filename))
+	# Set up environment and agent
 	e = Environment()  # create environment (also adds some dummy traffic)
 	a = e.create_agent(LearningAgent)  # create agent
 	e.set_primary_agent(a, enforce_deadline=True)  # specify agent to track
     # NOTE: You can set enforce_deadline=False while debugging to allow longer trials
 
     # Now simulate it
-	sim = Simulator(e, update_delay=0.1, display=False)  # create simulator (uses pygame when display=True, if available)
+	sim = Simulator(e, update_delay=0.1, display=True)  # create simulator (uses pygame when display=True, if available)
     # NOTE: To speed up simulation, reduce update_delay and/or set display=False
 
-	sim.run(n_trials=50)  # run for a specified number of trials
+	sim.run(n_trials=200)  # run for a specified number of trials
+	a.write_state_to_csv()
+	
 	# NOTE: To quit midway, press Esc or close pygame window, or hit Ctrl+C on the command-line
-	print "CONCLUSION REPORT"
-	print "WINS: {}".format(e.wins)
-	print "LOSSES: {}".format(e.losses)
-	print "INFRACTIONS: {}".format(e.infractions)
+	
+	#pdb.set_trace()
+
 
 
 if __name__ == '__main__':
