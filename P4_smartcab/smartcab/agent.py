@@ -8,6 +8,7 @@ import pdb # for debugging
 import os 
 import os.path
 import csv
+import pandas as pd
 
 class LearningAgent(Agent):
 	"""An agent that learns to drive in the smartcab world."""
@@ -27,9 +28,12 @@ class LearningAgent(Agent):
 		self.policy = np.zeros([self.number_of_states, 1], dtype = int)
 		#self.q = np.empty(shape=[self.number_of_states,self.number_of_states])
 		self.state_counter = 0
-		self.gamma = .3 #discount factor
-		self.alpha = .5 # learning rate
-		self.epsilon = .001
+		self.alpha = .5 # learning rate		
+		self.gamma = .1 #discount factor
+		self.epsilon = .01
+		self.data = pd.DataFrame({'alpha' : self.alpha, 'gamma' : self.gamma, 'epsilon' : self.epsilon,'successful': 0,'infractions' : 0, 'Q': [self.q], 'R': [self.R]})
+		print self.data
+
 		
 	def reset(self, destination=None):
 		self.planner.route_to(destination)
@@ -62,7 +66,11 @@ class LearningAgent(Agent):
 		if not this_state in self.list_of_states:
 			self.list_of_states.append(this_state)
 			
-	
+	def get_reward(self, reward):
+		if reward == -1.:
+			self.data['infractions']+= 1
+		elif reward== 12. or reward == 9.5 or reward== 9. or reward ==10. :
+			sefl.data['successfull'] += 1
 	def update(self, t):
 		# Gather inputs
 		self.next_waypoint = self.planner.next_waypoint()  # from route planner, also displayed by simulator
@@ -140,8 +148,22 @@ class LearningAgent(Agent):
 	def write_state_to_csv(self):
 		"""Write a line to the output CSV file"""
 		# MODIFICATION
-		for filename, variable in zip(['list_of_states.csv','reward.csv','Q.csv'] , [self.list_of_states, self.R, self.q]):
-			output_file = open(filename, 'wb')# append row to previous ones
+		self.data['Q'] = [self.q]
+		self.data['R'] = [self.R]
+
+		try:
+			df = pd.read_csv('outcome.csv')
+			pdb.set_trace()
+			df = pd.merge(df, self.data, how='right', on=['successful', 'infractions', 'Q', 'R'])
+		except IOError:
+			with open("outcome.csv", "w"):
+			# now you have an empty file already
+				df = self.data
+				pass  # or write something to it already
+
+		df.to_csv('outcome.csv')
+		for filename, variable in zip(['list_of_states','reward','Q'] , [self.list_of_states, self.R, self.q]):
+			output_file = open(filename+"_alpha_{}_gamma_{}_epsilon_{}.csv".format(self.alpha, self.gamma, self.epsilon), 'wb')# append row to previous ones
 			writer = csv.writer(output_file, delimiter='\n')
 			# example row in the CSV file
 			writer.writerow(variable)#, self.q, self.R ))
@@ -171,7 +193,7 @@ def run():
 	sim = Simulator(e, update_delay=0.1, display=True)  # create simulator (uses pygame when display=True, if available)
     # NOTE: To speed up simulation, reduce update_delay and/or set display=False
 
-	sim.run(n_trials=10)#run for a specified number of trials
+	sim.run(n_trials=2)#run for a specified number of trials
 	a.write_state_to_csv()
 	
 	# NOTE: To quit midway, press Esc or close pygame window, or hit Ctrl+C on the command-line
