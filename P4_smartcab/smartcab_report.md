@@ -22,7 +22,7 @@ Now that your driving agent is capable of moving around in the environment, your
 **QUESTION**: What states have you identified that are appropriate for modeling the smartcab and environment? Why do you believe each of these states to be appropriate for this problem?
 >*ANSWER: 
 
-> The current state is defined by the possible combinations of: **light** ('red', 'green'), **oncoming** ('yes', None), **right**  ('yes', None), **left** ('yes', None) and **next_waypoint** (None, 'forward', 'left', 'right'). 
+> The current state is defined by the possible combinations of: **light** ('red', 'green'), **oncoming**  (None, 'forward', 'left', 'right'), **right**   (None, 'forward', 'left', 'right'), **left**  (None, 'forward', 'left', 'right') and **next_waypoint** (None, 'forward', 'left', 'right'). 
 
 >``` 
 this_state= (inputs['light'], inputs['oncoming'], inputs['right'], inputs['left'], self.next_waypoint) 
@@ -38,11 +38,9 @@ self.state.append(self.list_of_states.index(this_state))
 >*ANSWER*: 
 >This total possible states are 64, obtained as follows: 
 
->``` number_of_states= len([ 'red', 'green'])*len('yes', None)*len('yes', None)*len('yes', None)*len(None, 'forward', 'left', 'right')=2*2*2*2*4 =64 ``` 
+>``` number_of_states= len([ 'red', 'green'])* len([None, 'forward', 'left', 'right'])* len([None, 'forward', 'left', 'right'])* len([None, 'forward', 'left', 'right'])* len([None, 'forward', 'left', 'right'])=2 *4 *4 *4 *4 = 512 ``` 
 
-> I think it is enough since it describes all the possible situations at an intersection
-                           
-
+> I think it is enough since it fully describes all the possible situations at an intersection. It may seem a high number but there are many factors to be taken into account at an intersection.                         
 
 
 ## Implement a Q-Learning Driving Agent

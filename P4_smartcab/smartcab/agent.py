@@ -21,15 +21,14 @@ class LearningAgent(Agent):
 		self.state = [] #we will use a list of tuples of states to map the indexes
 		self.list_of_states = []
 		self.next_waypoint = None
-		self.number_of_states= (len(self.valid_actions)**4)*2 # 4 waypoints or actions * 2 light states * 4 oncoming  traffic states * 4 left traffic states  * 4 right  traffic states 
-																#  next_waypoint, left, right and oncoming can take values 'None' , 'left', 'right' or 'forward'
+		self.number_of_states= 5
 		self.R = np.zeros(shape=[self.number_of_states, 4]) #we have 4 actions
 		self.q = np.zeros(shape=[self.number_of_states, 4])
 		self.policy = np.zeros([self.number_of_states, 1], dtype = int)
 		#self.q = np.empty(shape=[self.number_of_states,self.number_of_states])
 		self.state_counter = 0
-		self.gamma = .8 #random value
-		self.alpha = 0.7
+		self.gamma = .3 #discount factor
+		self.alpha = .5 # learning rate
 		self.epsilon = .001
 		
 	def reset(self, destination=None):
@@ -39,9 +38,24 @@ class LearningAgent(Agent):
 		self.state = []
 		self.next_waypoint = None
 		
-	def build_state(self, inputs, next_waypoint):
+	def return_state(self, inputs, next_waypoint):
 		'''Builds a state tuple'''
-		return (inputs['light'], inputs['oncoming'], inputs['right'], inputs['left'], next_waypoint)
+		action = next_waypoint #dejar como next_way_point porque ha cambiado la variable
+		state = 0
+		if action == 'forward':
+			if inputs['light'] != 'green':
+				state = 1
+		elif action == 'left':
+			if inputs['light'] == 'green' and (inputs['oncoming'] == None or inputs['oncoming'] == 'left'):
+				state = 2
+			else:
+				state = 3
+		elif action == 'right':
+			if inputs['light'] == 'green' or inputs['left'] != 'forward':
+				state = 4
+			else:
+				state = 5
+		return state
 	
 	def store_states(self,this_state):
 		'''Creates a list with the states that have appeared up to now (light,oncoming,right,left,next_waypoint)'''
@@ -56,10 +70,11 @@ class LearningAgent(Agent):
 		deadline = self.env.get_deadline(self)
 		
 		# TODO: Update state
-		this_state =  self.build_state(inputs, self.next_waypoint)
+		this_state =  self.return_state(inputs, self.next_waypoint)
 		self.store_states(this_state)
 		self.state.append(self.list_of_states.index(this_state))
-		#print self.list_of_states
+		
+			#print self.list_of_states
 		#print self.state
 	
 	
@@ -87,9 +102,10 @@ class LearningAgent(Agent):
 		reward = self.R[self.state[-1]][self.valid_actions.index(action)] 
 		next_inputs = self.env.sense(self)
 		next_waypoint = self.planner.next_waypoint() 
-		next_state = self.build_state(next_inputs, next_waypoint)
+		next_state = self.return_state(next_inputs, next_waypoint)
 		temp = []
 		self.store_states(next_state)
+		print next_state, self.list_of_states.index(next_state) 
 		temp= [self.q[self.list_of_states.index(next_state)][self.valid_actions.index(next_action)] for next_action in self.valid_actions] 
 		# First approach : Q_hat(s,a) += alpha(r+gamma*max(abs(Q_hat(s',a')-Q_hat(s,a))))
 		self.alpha = 1./t
@@ -101,6 +117,8 @@ class LearningAgent(Agent):
 		if len(self.state)==1: # if we are in the first iteration 
 		#1: random action
 			action = random.choice(self.valid_actions)
+		#1 next waypoint can be a good direction to start
+			action= self.next_waypoint
 		else:
 		#2_using policy to take an action
 			probabilities = [1.-self.epsilon  , self.epsilon/float(len(self.valid_actions)) , self.epsilon/float(len(self.valid_actions)) , self.epsilon/float(len(self.valid_actions)), self.epsilon/float(len(self.valid_actions))]
@@ -115,14 +133,14 @@ class LearningAgent(Agent):
 	def get_policy(self):
 		next_inputs = self.env.sense(self)
 		next_waypoint = self.planner.next_waypoint() 
-		next_state = self.build_state(next_inputs, next_waypoint)
+		next_state = self.return_state(next_inputs, next_waypoint)
 		self.policy[self.state[-1]]= np.argmax([self.q[self.list_of_states.index(next_state)][self.valid_actions.index(next_action)] for next_action in self.valid_actions]) 
 		return self.policy[self.state[-1]]
 		
 	def write_state_to_csv(self):
 		"""Write a line to the output CSV file"""
 		# MODIFICATION
-		for filename, variable in zip(['list_of_states.csv','reward.csv','Q.csv'] , [self.list_of_states, self.q, self.R]):
+		for filename, variable in zip(['list_of_states.csv','reward.csv','Q.csv'] , [self.list_of_states, self.R, self.q]):
 			output_file = open(filename, 'wb')# append row to previous ones
 			writer = csv.writer(output_file, delimiter='\n')
 			# example row in the CSV file
@@ -153,7 +171,7 @@ def run():
 	sim = Simulator(e, update_delay=0.1, display=True)  # create simulator (uses pygame when display=True, if available)
     # NOTE: To speed up simulation, reduce update_delay and/or set display=False
 
-	sim.run(n_trials=200)  # run for a specified number of trials
+	sim.run(n_trials=10)#run for a specified number of trials
 	a.write_state_to_csv()
 	
 	# NOTE: To quit midway, press Esc or close pygame window, or hit Ctrl+C on the command-line
