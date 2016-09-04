@@ -22,14 +22,14 @@ class LearningAgent(Agent):
 		self.state = [] #we will use a list of tuples of states to map the indexes
 		self.list_of_states = []
 		self.next_waypoint = None
-		self.number_of_states= 5
-		self.R = np.zeros(shape=[self.number_of_states, 4]) #we have 4 actions
-		self.q = np.zeros(shape=[self.number_of_states, 4])
+		self.number_of_states= 6
+		self.R = np.zeros(shape=[self.number_of_states, len(self.valid_actions)]) #we have 4 actions
+		self.q = np.zeros(shape=[self.number_of_states, len(self.valid_actions)])
 		self.policy = np.zeros([self.number_of_states, 1], dtype = int)
 		#self.q = np.empty(shape=[self.number_of_states,self.number_of_states])
 		self.state_counter = 0
-		self.alpha = .5 # learning rate		
-		self.gamma = .1 #discount factor
+		self.alpha = 1 # learning rate		
+		self.gamma = .5 #discount factor
 		self.epsilon = .01
 		self.data = pd.DataFrame({'alpha' : self.alpha, 'gamma' : self.gamma, 'epsilon' : self.epsilon,'successful': 0,'infractions' : 0, 'Q': [self.q], 'R': [self.R]})
 		print self.data
@@ -38,10 +38,51 @@ class LearningAgent(Agent):
 	def reset(self, destination=None):
 		self.planner.route_to(destination)
 		# TODO: Prepare for a new trip; reset any variables here, if required
-		self.color = 'red'  # override color
+		self.color = 'red'  # override colr
 		self.state = []
 		self.next_waypoint = None
 		
+	def write_success_to_csv(self, data):
+		"""Write a line to the output CSV file"""
+		# MODIFICATION
+		output_file = open('output.csv', 'a') # append row to previous ones
+
+		writer = csv.writer(output_file)#, delimiter='\n  ')
+		# example row in the CSV file
+		writer.writerow(data)
+		output_file.close()
+	
+	def write_state_to_csv(self):
+		"""Write a line to the output CSV file"""
+		# MODIFICATION
+		self.data['Q'] = [self.q]
+		self.data['R'] = [self.R]
+		try:
+			df = pd.read_csv('outcome.csv')
+			df= df.append(self.data) #self.data not in df so we append it
+			#df_mask= pd.DataFrame({'alpha':df['alpha'].isin(self.data['alpha']),'gamma':df['gamma'].isin(self.data['gamma']), 'epsilon':df['epsilon'].isin(self.data['epsilon']),'successful': 0,'infractions' : 0, 'Q': [self.q], 'R': [self.R]})
+			#pdb.set_trace()
+			#mask = df[['alpha','gamma','epsilon']]==self.data[['alpha','gamma','epsilon']]
+			#mask_update=['successful', 'infractions', 'Q', 'R']
+			
+			#if mask.values.all():#df[mask].isnull().values.any(): #if df[mask] contains nulls it means there is colission
+				#pdb.set_trace()
+				#df.iloc[df[mask].index].update(self.data.iloc[self.data[mask].index])
+			#else:
+				#df= df.append(self.data) #self.data not in df so we append 
+			#df = pd.merge(df, self.data, how='right', on=['successful', 'infractions', 'Q', 'R'])
+		except IOError:
+			with open("outcome.csv", "w"):
+			# now you have an empty file already
+				df = self.data
+				pass  # or write something to it already
+
+		df.to_csv('outcome.csv',index=False)
+		for filename, variable in zip(['list_of_states','reward','Q'] , [self.list_of_states, self.R, self.q]):
+			output_file = open(filename+"_alpha_{}_gamma_{}_epsilon_{}.csv".format(self.alpha, self.gamma, self.epsilon), 'wb')# append row to previous ones
+			writer = csv.writer(output_file, delimiter='\n')
+			# example row in the CSV file
+			writer.writerow(variable)#, self.q, self.R ))		
 	def return_state(self, inputs, next_waypoint):
 		'''Builds a state tuple'''
 		action = next_waypoint #dejar como next_way_point porque ha cambiado la variable
@@ -66,11 +107,13 @@ class LearningAgent(Agent):
 		if not this_state in self.list_of_states:
 			self.list_of_states.append(this_state)
 			
-	def get_reward(self, reward):
-		if reward == -1.:
+	def get_reward(self, reward,t):
+		if reward>=9.: #options are reward== 12. or reward == 9.5 or reward== 9. or reward ==10. : # success
+			print 'SUCCESS!!!!!!!!!!!!!!!! \n \n'
+			self.data['successful'] += 1
+			self.write_success_to_csv([reward, t]) # save 
+		elif reward == -1.:
 			self.data['infractions']+= 1
-		elif reward== 12. or reward == 9.5 or reward== 9. or reward ==10. :
-			sefl.data['successfull'] += 1
 	def update(self, t):
 		# Gather inputs
 		self.next_waypoint = self.planner.next_waypoint()  # from route planner, also displayed by simulator
@@ -91,6 +134,8 @@ class LearningAgent(Agent):
 		
 		# Execute action and get reward
 		reward = self.env.act(self, action)
+		# MODIFICATION https://discussions.udacity.com/t/efficiently-counting-the-number-of-times-car-reaches-destination-in-last-10-trials-out-of-100/174080/2
+		self.get_reward(reward,t)
 		self.R[self.state[-1]][self.valid_actions.index(action)] = reward
 		#print self.R[range(len(self.list_of_states))][:]
 		
@@ -145,28 +190,7 @@ class LearningAgent(Agent):
 		self.policy[self.state[-1]]= np.argmax([self.q[self.list_of_states.index(next_state)][self.valid_actions.index(next_action)] for next_action in self.valid_actions]) 
 		return self.policy[self.state[-1]]
 		
-	def write_state_to_csv(self):
-		"""Write a line to the output CSV file"""
-		# MODIFICATION
-		self.data['Q'] = [self.q]
-		self.data['R'] = [self.R]
 
-		try:
-			df = pd.read_csv('outcome.csv')
-			pdb.set_trace()
-			df = pd.merge(df, self.data, how='right', on=['successful', 'infractions', 'Q', 'R'])
-		except IOError:
-			with open("outcome.csv", "w"):
-			# now you have an empty file already
-				df = self.data
-				pass  # or write something to it already
-
-		df.to_csv('outcome.csv')
-		for filename, variable in zip(['list_of_states','reward','Q'] , [self.list_of_states, self.R, self.q]):
-			output_file = open(filename+"_alpha_{}_gamma_{}_epsilon_{}.csv".format(self.alpha, self.gamma, self.epsilon), 'wb')# append row to previous ones
-			writer = csv.writer(output_file, delimiter='\n')
-			# example row in the CSV file
-			writer.writerow(variable)#, self.q, self.R ))
 
 def remove_file(filename):
 	try:
@@ -193,7 +217,7 @@ def run():
 	sim = Simulator(e, update_delay=0.1, display=True)  # create simulator (uses pygame when display=True, if available)
     # NOTE: To speed up simulation, reduce update_delay and/or set display=False
 
-	sim.run(n_trials=2)#run for a specified number of trials
+	sim.run(n_trials=100)#run for a specified number of trials
 	a.write_state_to_csv()
 	
 	# NOTE: To quit midway, press Esc or close pygame window, or hit Ctrl+C on the command-line
