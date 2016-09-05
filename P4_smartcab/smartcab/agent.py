@@ -22,14 +22,15 @@ class LearningAgent(Agent):
 		self.state = [] #we will use a list of tuples of states to map the indexes
 		self.list_of_states = []
 		self.next_waypoint = None
-		self.number_of_states= 6
+		self.number_of_states= (len(self.valid_actions)**4)*2 # 4 waypoints or actions * 2 light states * 4 oncoming  traffic states * 4 left traffic states  * 4 right  traffic states 
+																#  next_waypoint, left, right and oncoming can take values 'None' , 'left', 'right' or 'forward'
 		self.R = np.zeros(shape=[self.number_of_states, len(self.valid_actions)]) #we have 4 actions
 		self.q = np.zeros(shape=[self.number_of_states, len(self.valid_actions)])
-		self.policy = np.zeros([self.number_of_states, 1], dtype = int)
+		self.policy = np.zeros([self.number_of_states, 1], dtype = int) # policy: what action will be taken in each state
 		self.state_counter = 0
-		self.alpha = .95 # learning rate		
-		self.gamma = .1 #discount factor
-		self.epsilon = .01
+		self.alpha = 1. # learning rate		
+		self.gamma = 0.0 #discount factor
+		self.epsilon = 0.0
 		self.data = pd.DataFrame({'alpha' : self.alpha, 'gamma' : self.gamma, 'epsilon' : self.epsilon,'successful': 0,'infractions' : 0, 'Q': [self.q], 'R': [self.R]})
 		print self.data
 
@@ -82,24 +83,10 @@ class LearningAgent(Agent):
 			writer = csv.writer(output_file, delimiter='\n')
 			# example row in the CSV file
 			writer.writerow(variable)#, self.q, self.R ))		
-	def return_state(self, inputs, next_waypoint):
+			
+	def build_state(self, inputs, next_waypoint):
 		'''Builds a state tuple'''
-		action = next_waypoint #dejar como next_way_point porque ha cambiado la variable
-		state = 0
-		if action == 'forward':
-			if inputs['light'] != 'green':
-				state = 1
-		elif action == 'left':
-			if inputs['light'] == 'green' and (inputs['oncoming'] == None or inputs['oncoming'] == 'left'):
-				state = 2
-			else:
-				state = 3
-		elif action == 'right':
-			if inputs['light'] == 'green' or inputs['left'] != 'forward':
-				state = 4
-			else:
-				state = 5
-		return state
+		return (inputs['light'], inputs['oncoming'], inputs['right'], inputs['left'], next_waypoint)
 	
 	def store_states(self,this_state):
 		'''Creates a list with the states that have appeared up to now (light,oncoming,right,left,next_waypoint)'''
@@ -120,7 +107,7 @@ class LearningAgent(Agent):
 		deadline = self.env.get_deadline(self)
 		
 		# TODO: Update state
-		this_state =  self.return_state(inputs, self.next_waypoint)
+		this_state =  self.build_state(inputs, self.next_waypoint)
 		self.store_states(this_state)
 		self.state.append(self.list_of_states.index(this_state))
 	
@@ -150,13 +137,13 @@ class LearningAgent(Agent):
 		reward = self.R[self.state[-1]][self.valid_actions.index(action)] 
 		next_inputs = self.env.sense(self)
 		next_waypoint = self.planner.next_waypoint() 
-		next_state = self.return_state(next_inputs, next_waypoint)
+		next_state = self.build_state(next_inputs, next_waypoint)
 		temp = []
 		self.store_states(next_state)
 		temp= [self.q[self.list_of_states.index(next_state)][self.valid_actions.index(next_action)] for next_action in self.valid_actions] 
 		# First approach : Q_hat(s,a) = alpha(r+gamma*max(abs(Q_hat(s',a')-Q_hat(s,a))))
 		self.alpha = 1./t
-		self.q[self.state[-1]][self.valid_actions.index(action)]+= self.alpha* (reward +  self.gamma*np.max(temp-(1./self.gamma)*self.q[self.state[-1]][self.valid_actions.index(action)]))
+		self.q[self.state[-1]][self.valid_actions.index(action)]+= self.alpha* (reward +  self.gamma*(np.max(temp))-self.q[self.state[-1]][self.valid_actions.index(action)])
 				# we iterate over the possible combinations of states and actions, since any future combination is possible 
 	def select_action(self):
 		if len(self.state)==1: # if we are in the first iteration 
@@ -176,7 +163,7 @@ class LearningAgent(Agent):
 	def get_policy(self):
 		next_inputs = self.env.sense(self)
 		next_waypoint = self.planner.next_waypoint() 
-		next_state = self.return_state(next_inputs, next_waypoint)
+		next_state = self.build_state(next_inputs, next_waypoint)
 		self.policy[self.state[-1]]= np.argmax([self.q[self.list_of_states.index(next_state)][self.valid_actions.index(next_action)] for next_action in self.valid_actions]) 
 		return self.policy[self.state[-1]]
 		
@@ -207,7 +194,7 @@ def run():
 	sim = Simulator(e, update_delay=0., display=False)  # create simulator (uses pygame when display=True, if available)
     # NOTE: To speed up simulation, reduce update_delay and/or set display=False
 
-	sim.run(n_trials=250)#run for a specified number of trials
+	sim.run(n_trials=100)#run for a specified number of trials
 	a.write_state_to_csv()
 	
 	# NOTE: To quit midway, press Esc or close pygame window, or hit Ctrl+C on the command-line
