@@ -1,0 +1,291 @@
+\documentclass[]{article}
+\usepackage{geometry}
+ \geometry{
+ a4paper,
+ total={170mm,257mm},
+ left=20mm,
+ right= 30mm,
+ top=25mm,
+ bottom= 15mm
+ }
+
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+    \usepackage{xltxtra,xunicode}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Mapping=tex-text,Scale=MatchLowercase}
+  \newcommand{\euro}{€}
+\fi
+% use microtype if available
+\IfFileExists{microtype.sty}{\usepackage{microtype}}{}
+\ifxetex
+  \usepackage[setpagesize=false, % page size defined by xetex
+              unicode=false, % unicode breaks when used with xetex
+              xetex]{hyperref}
+\else
+  \usepackage[unicode=true]{hyperref}
+\fi
+\hypersetup{breaklinks=true,
+            bookmarks=true,
+            pdfauthor={},
+            pdftitle={},
+            colorlinks=true,
+            citecolor=blue,
+            urlcolor=blue,
+            linkcolor=magenta,
+            pdfborder={0 0 0}}
+\urlstyle{same}  % don't use monospace font for urls
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\setcounter{secnumdepth}{0}
+
+
+\input{preamble}
+\author{}
+\date{}
+
+
+\usepackage{comment}
+
+\newcommand{\competition}{The Marinexplore and Cornell University Whale Detection Challenge}
+\begin{document}
+
+\section{Machine Learning Engineer
+Nanodegree}\label{machine-learning-engineer-nanodegree}
+
+\subsection{Capstone Proposal}\label{capstone-proposal}
+
+Isabel María Villalba Jiménez \\ \today
+
+\subsection{Proposal}\label{proposal}
+
+%\emph{(approx. 2-3 pages)}
+
+\subsubsection{Domain Background}\label{domain-background}
+\begin{comment}
+\emph{(approx. 1-2 paragraphs)}
+
+In this section, provide brief details on the background information of
+the domain from which the project is proposed. Historical information
+relevant to the project should be included. It should be clear how or
+why a problem in the domain can or should be solved. Related academic
+research should be appropriately cited in this section, including why
+that research is relevant. Additionally, a discussion of your personal
+motivation for investigating a particular problem in the domain is
+encouraged but not required.
+
+
+
+
+We depend on shipping industry's uninterrupted ability to transport goods across long distances. Navigation technologies combine accurate position and environmental data to calculate optimal transport routes. Accounting for and reducing the impact of commercial shipping on the ocean’s environment, while achieving commercial sustainability, is of increasing importance, especially as it relates to the influence of cumulative noise “footprints” on the great whales.
+
+Marinexplore is organizing the Planet's ocean data with the leading community of ocean professionals. One of the important datasets consists of acoustic recordings that can be used to detect species inhabiting the global ocean. Knowledge about animal locations can be utilized in industrial operations.
+
+
+Cornell University's Bioacoustic Research Program has extensive experience in identifying endangered whale species and has deployed a 24/7 buoy network to guide ships from colliding with the world's last 400 North Atlantic right whales.
+
+Right whales make a half-dozen types of sounds, but the characteristic up-call is the one identified by the auto-detection buoys. The up-call is useful because it’s distinctive and right whales give it often. A type of “contact call,” the up-call is a little like small talk--the sound of a right whale going about its day and letting others know it’s nearby. In this recording the up-call is easy to hear--a deep, rising “whoop” that lasts about a second.
+
+Marinexplore and Cornell researchers challenge YOU to beat the existing whale detection algorithm identifying the right whale calls. This will advance ship routing decisions in the region.
+
+[For details on the buoy network see a paper published by Acoustical Society of America.]
+
+Read the summary of the competition for a quick overview of the impact of the results.
+\end{comment}
+
+
+\subsubsection{Problem Statement}\label{problem-statement}
+\begin{comment}
+\emph{(approx. 1 paragraph)}
+
+In this section, clearly describe the problem that is to be solved. The
+problem described should be well defined and should have at least one
+relevant potential solution. Additionally, describe the problem
+thoroughly such that it is clear that the problem is quantifiable (the
+problem can be expressed in mathematical or logical terms) , measurable
+(the problem can be measured by some metric and clearly observed), and
+replicable (the proble can be reproduced and occurs more than once).
+\end{comment}
+
+Rigth Whales are one of the most endangered species around the world, with only a few 400 remaining. Many of casualties among them are caused by crashing into boats. One way of avoiding these collision is to alert ships when whales are detected in the proximity
+
+In order to do so,Cornell University's Bioacoustic Research Program, which has extensive experience in identifying endangered whale species, has deployed a 24/7 buoy network to guide ships from colliding with the world's last 400 North Atlantic right whales.
+
+This work comes from a proposal of the Cornell University's Bioacoustic Research Program of finding new ways of increasing the performance of the detection of these mammals. The proposal was made through a Kaggle competition named \href{https://www.kaggle.com/c/whale-detection-challenge}{\competition}.
+
+\subsubsection{Datasets and Inputs}\label{datasets-and-inputs}
+\begin{comment}
+\emph{(approx. 2-3 paragraphs)}
+
+In this section, the dataset(s) and/or input(s) being considered for the
+project should be thoroughly described, such as how they relate to the
+problem and why they should be used. Information such as how the dataset
+or input is (was) obtained, and the characteristics of the dataset or
+input, should be included with relevant references and citations as
+necessary It should be clear how the dataset(s) or input(s) will be used
+in the project and whether their use is appropriate given the context of
+the problem.
+\end{comment}
+The dataset used comes from the competition and consists of 30,000 training samples and 54,503 testing samples. Each candidate is a 2-second .aiff sound clip with a sample rate of 2 kHz. The file "train.csv" gives the labels for the train set. Candidates that contain a right whale call have label=1, otherwise label=0.
+
+These clips contain any mixture of right whale calls, non-biological noise, or other whale calls.Right whales make a half-dozen types of sounds, but the characteristic up-call is the one identified by the auto-detection buoys. The up-call is useful because it’s distinctive and right whales give it often. A type of “contact call,” the up-call is a little like small talk--the sound of a right whale going about its day and letting others know it’s nearby. In this recording the up-call is easy to hear--a deep, rising “whoop” that lasts about a second.
+
+
+However, as the competition is closed, we cannot access the test labels and we cannot compare the performance in this dataset, two options sound plausible:
+\begin{itemize}
+	\item divide the train dataset into: train, cross-validation and test dataset
+	\item use the winning algorithm to generate an estimation of the test labels and so increase the amount of data for training.
+\end{itemize}
+
+The training dataset is imbalance, consisitng of approximately 7000 Right Whales samples and 23000 of non-Right-Whales samples. We could just, balance the samples used or try to use an algorithm that penalizes this imbalance.
+
+“Data courtesy of and copyrighted by Cornell University and the Cornell Research Foundation.”
+
+\subsubsection{Solution Statement}\label{solution-statement}
+Impressed by the working principle of Convolutional Neural Networks, I decided looking for uses beyond pure image classification. 
+
+I also had been wondering if anything related to animals and whales could be done. I started looking in the internet and found several Kaggle competitions. One Whale detection though images, and other to recognize the North Atlantic Right Whale call. Searching for applications of Convolutional Networks in sound recognition I found and entry related to the \competition. In \cite{Nouriblog} Daniel Nouri proposed to use ConvNets not just to go across the spectrum of the Whale Calls, but to try to recognize a pattern by simply looking at the image, like a human could be. He got pretty good results with a very straight forward proposal. I decided to give it a try and look for most used ConvNets scheme and see their performance in this competition.
+
+%habia otra de todo tipo de ballenas no?
+
+\begin{comment}
+\emph{(approx. 1 paragraph)}
+
+In this section, clearly describe a solution to the problem. The
+solution should be applicable to the project domain and appropriate for
+the dataset(s) or input(s) given. Additionally, describe the solution
+thoroughly such that it is clear that the solution is quantifiable (the
+solution can be expressed in mathematical or logical terms) , measurable
+(the solution can be measured by some metric and clearly observed), and
+replicable (the solution can be reproduced and occurs more than once).
+\end{comment}
+
+\subsubsection{Benchmark Model}\label{benchmark-model}
+
+\begin{comment}
+\emph{(approximately 1-2 paragraphs)}
+
+In this section, provide the details for a benchmark model or result
+that relates to the domain, problem statement, and intended solution.
+Ideally, the benchmark model or result contextualizes existing methods
+or known information in the domain and problem given, which could then
+be objectively compared to the solution. Describe how the benchmark
+model or result is measurable (can be measured by some metric and
+clearly observed) with thorough detail.
+\end{comment}
+We will try to compare the performance of the model with the performance of the wining model of the competition  (SluiceBox:  \href{https://github.com/nmkridler/moby}{Github Repo})and the Daniel Nouri's model, which inspiring this work.
+
+The AUC of these models in the public leaderboard was:
+\begin{itemize}
+	\item SluiceBox: 0.98410
+	\item Nouri: 0.98061 
+\end{itemize}
+
+We still cannot compare our model's performance to theirs since we do not have the test labels and also, the public leaderboard data test used is slightly different for each participant.
+
+We will try to different approaches:
+\begin{enumerate}
+	\item assuming that we have enough complete data samples (train dataset), trying to increase the accuracy as much as possible. 
+	\item assuming the predictions generated by the winning model as test labels and them as reference to compare our model with. 
+\end{enumerate}
+%pero no podemos comparar directamente porque no tenemos el test dataset
+
+\subsubsection{Evaluation Metrics}\label{evaluation-metrics}
+\begin{comment}
+\emph{(approx. 1-2 paragraphs)}
+
+In this section, propose at least one evaluation metric that can be used
+to quantify the performance of both the benchmark model and the solution
+model. The evaluation metric(s) you propose should be appropriate given
+the context of the data, the problem statement, and the intended
+solution. Describe how the evaluation metric(s) are derived and provide
+an example of their mathematical representations (if applicable).
+Complex evaluation metrics should be clearly defined and quantifiable
+(can be expressed in mathematical or logical terms).
+\end{comment}
+
+The main evaluation metric for this project will be that used in the Kaggle competition, this is the Area Under the Curve (AUC), where the Curve is the ROC curve.
+
+The receiver operating characteristic (ROC) curve is a graphical plot that illustrates the performance of a binary classifier system as its discrimination threshold is varied. The curve is created by plotting the true positive rate (TPR) against the false positive rate (FPR) at various threshold settings.
+
+The true-positive rate is also known as sensitivity, recall or probability of detection in machine learning.
+
+The false-positive rate is also known as the fall-out or probability of false alarm and can be calculated as (1 - specificity). 
+
+The ROC curve is thus the sensitivity as a function of fall-out. In general, if the probability distributions for both detection and false alarm are known, the ROC curve can be generated by plotting the cumulative distribution function (area under the probability distribution from $-\infty$  to the discrimination threshold) of the detection probability in the y-axis versus the cumulative distribution function of the false-alarm probability in x-axis.  \cite{wikiROC}
+
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width= 0.4\textwidth]{images/ROCfig}
+\caption{\centering cd GROC curve graphic explanation \\ \href{http://www.wikiwand.com/it/Receiver_operating_characteristic}{Source http://www.wikiwand.com/it/Receiver\_operating\_characteristic}}
+\end{figure}
+
+\subsubsection{Project Design}\label{project-design}
+\begin{comment}
+\emph{(approx. 1 page)}
+
+In this final section, summarize a theoretical workflow for approaching a solution given the problem. Provide thorough discussion for what strategies you may consider employing, what analysis of the data might
+be required before being used, or which algorithms will be considered
+for your implementation. The workflow and discussion that you provide
+should align with the qualities of the previous sections. Additionally,
+you are encouraged to include small visualizations, pseudocode, or
+diagrams to aid in describing the project design, but it is not
+required. The discussion should clearly outline your intended workflow
+of the capstone project.
+\end{comment}
+
+
+\begin{itemize}
+	\item sound samples exploration
+	\item spectrogram generation and image processing
+	\item generation of Pickle 
+	\item select ConvNets model and adjust parameters
+	\item compare the performance of winning model using the reduced version train and test dataset extracted form the train dataset
+\end{itemize}
+\begin{center}\rule{3in}{0.4pt}\end{center}
+\begin{comment}
+
+\textbf{Before submitting your proposal, ask yourself. . .}
+
+\begin{itemize}
+\itemsep1pt\parskip0pt\parsep0pt
+\item
+  Does the proposal you have written follow a well-organized structure
+  similar to that of the project template?
+\item
+  Is each section (particularly \textbf{Solution Statement} and
+  \textbf{Project Design}) written in a clear, concise and specific
+  fashion? Are there any ambiguous terms or phrases that need
+  clarification?
+\item
+  Would the intended audience of your project be able to understand your
+  proposal?
+\item
+  Have you properly proofread your proposal to assure there are minimal
+  grammatical and spelling mistakes?
+\item
+  Are all the resources used for this project correctly cited and
+  referenced?
+\end{itemize}
+\end{comment}
+
+
+
+
+\bibliographystyle{unsrt}
+\bibliography{../../../../../media/mabelvj/Darsena/DropboxUbuntu/Dropbox/PhD/library}
+
+\end{document}
