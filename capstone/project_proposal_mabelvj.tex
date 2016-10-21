@@ -86,6 +86,12 @@ Isabel María Villalba Jiménez \\ \today
 
 %\emph{(approx. 2-3 pages)}
 
+Right whales are one of the most endangered species around the world, with only a few 400 remaining. Many of casualties among them are caused by crashing into boats. One way of avoiding these collisions is to alert ships when whales are detected in the proximity.
+
+In order to do so, Cornell University's Bioacoustic Research Program, which has extensive experience in identifying endangered whale species, has deployed a 24/7 buoy network to guide ships from colliding with the world's last 400 North Atlantic right whales.
+
+This work comes from a proposal of the Cornell University's Bioacoustic Research Program of finding new ways of improving the detection of these mammals through the audio signal of the buoys network. The proposal was made through a Kaggle competition named \href{https://www.kaggle.com/c/whale-detection-challenge}{\competition} \cite{kagglewhale} \copyrighting.
+
 \subsubsection{Domain Background}\label{domain-background}
 \begin{comment}
 \emph{(approx. 1-2 paragraphs)}
@@ -119,6 +125,9 @@ Read the summary of the competition for a quick overview of the impact of the re
 \end{comment}
 
 
+Impressed by the working principle of Convolutional Neural Networks, I decided looking for uses beyond pure image classification. I also had been wondering if anything related to animals and whales could be done. I started looking in the internet and found several Kaggle competitions: one whale detection though images (\href{https://www.kaggle.com/c/noaa-right-whale-recognition}{Right Whale Recognition}), and other to recognize the North Atlantic Right Whale call (\href{https://www.kaggle.com/c/whale-detection-challenge}{\competition}). Searching for applications of Convolutional Networks in sound recognition I found an entry related to the \competition. In \cite{Nouriblog} Daniel Nouri proposed to use ConvNets not just to go across the spectrogram of the Whale Calls, but try to recognize a pattern by simply looking at its image, like a human could. With this proposal he got pretty good results with a very straight forward approach. I decided to give it a try and look for most used ConvNets schemes and see their performance in this competition.
+
+
 \subsubsection{Problem Statement}\label{problem-statement}
 \begin{comment}
 \emph{(approx. 1 paragraph)}
@@ -132,12 +141,15 @@ problem can be expressed in mathematical or logical terms) , measurable
 replicable (the problem can be reproduced and occurs more than once).
 \end{comment}
 
-Rigth Whales are one of the most endangered species around the world, with only a few 400 remaining. Many of casualties among them are caused by crashing into boats. One way of avoiding these collisions is to alert ships when whales are detected in the proximity.
+Right whales make a half-dozen types of sounds, but the most characteristic one is the up-call.
 
-In order to do so, Cornell University's Bioacoustic Research Program, which has extensive experience in identifying endangered whale species, has deployed a 24/7 buoy network to guide ships from colliding with the world's last 400 North Atlantic right whales.
-
-This work comes from a proposal of the Cornell University's Bioacoustic Research Program of finding new ways of improving the detection of these mammals through the audio signal of the buoys network. The proposal was made through a Kaggle competition named \href{https://www.kaggle.com/c/whale-detection-challenge}{\competition} \cite{kagglewhale} \copyrighting.
-
+This type of "contact call",  is a little like small talk--the sound of a right whale going about its day and letting others know it is nearby. In figure \ref{img:upcall} it is represented the spectrogram of an up-call which sounds like a deep, rising “whoop” that lasts about a second sound in \cite{CornellWeb}, other calls in \cite{CornellWeb2}).
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width= 0.3\textwidth]{images/sound_upcall_quiet.jpg}
+\caption{Spectrogram of a rigth whale up-call \cite{CornellWeb} \label{img:upcall}}
+\end{figure}
+The goal of this work it to be able to detect right whale up-calls, which is the most characteristic call of right whales, from the audio detected by the buoys deployed in the sea.
 \subsubsection{Datasets and Inputs}\label{datasets-and-inputs}
 \begin{comment}
 \emph{(approx. 2-3 paragraphs)}
@@ -151,30 +163,16 @@ necessary It should be clear how the dataset(s) or input(s) will be used
 in the project and whether their use is appropriate given the context of
 the problem.
 \end{comment}
-The dataset used comes from the competition and consists of 30,000 training samples and 54,503 testing samples. Each candidate is a 2-second .aiff sound clip with a sample rate of 2 kHz. The file "train.csv" gives the labels for the train set. Candidates that contain a right whale call have label=1, otherwise label=0.
-
-These clips contain any mixture of right whale calls, non-biological noise, or other whale calls \cite{CornellWeb, CornellWeb2}.  Right whales make a half-dozen types of sounds. However, the audio is recorded after the buoys auto-detect the characteristic up-call, biasing the dataset to that kind of calls. Thus, it makes sense to detect only that kind of call, which is the most  characteristic and most frequently emitted (details on the deployment of the buoys and how the recordings are made in \cite{McDonald2002}).
-
-This type of "contact call",  is a little like small talk--the sound of a right whale going about its day and letting others know it is nearby. In figure \ref{img:upcall} it is represented the spectrogram fi an up-call which sounds like a deep, rising “whoop” that lasts about a second (sound in \cite{CornellWeb}, other calls in \cite{CornellWeb2}).
-
-\begin{figure}[htpb!]
-\centering
-\includegraphics[width= 0.3\textwidth]{images/sound_upcall_quiet.jpg}
-\caption{Spectrogram of a rigth whale up-call \cite{CornellWeb} \label{img:upcall}}
-\end{figure}
-
-However, as the competition is closed, I cannot access the test labels and compare the performance to others algorithms. Two options sound plausible:
-\begin{itemize}
-	\item divide the train dataset into: train, cross-validation and test dataset
-	\item use the winning algorithm to generate an estimation of the test labels and so increase the amount of data for training.
-\end{itemize}
+The dataset used comes from the competition and consists of 30,000 training samples and 54,503 testing samples. Each candidate is a 2-second .aiff sound clip with a sample rate of 2 kHz. The file "train.csv" gives the labels for the train set. Candidates that contain a right whale call have label=1, otherwise label=0. These clips contain any mixture of right whale calls, non-biological noise, or other whale calls \cite{CornellWeb, CornellWeb2}. 
 
 The training dataset is imbalanced, consisting of approximately 7000 Right Whales samples and 23000 of none Right-Whales samples. We could just balance the samples used or try to use an algorithm that penalizes this imbalance.
 
-\subsubsection{Solution Statement}\label{solution-statement}
-Impressed by the working principle of Convolutional Neural Networks, I decided looking for uses beyond pure image classification. 
+The audio is recorded after the buoys auto-detect the characteristic up-call, biasing the dataset to that kind of calls. Thus, it makes sense to detect only that kind of call, which is the most characteristic and most frequently emitted (details on the deployment of the buoys and how the recordings are made in \cite{McDonald2002}). This call (see figure \ref{img:upcall}) has a bandwidth of about 250Hz, fact that will help to reduce information processed to that range of frequencies.
 
-I also had been wondering if anything related to animals and whales could be done. I started looking in the internet and found several Kaggle competitions: one whale detection though images (\href{https://www.kaggle.com/c/noaa-right-whale-recognition}{Right Whale Recognition}), and other to recognize the North Atlantic Right Whale call (\href{https://www.kaggle.com/c/whale-detection-challenge}{\competition}). Searching for applications of Convolutional Networks in sound recognition I found an entry related to the \competition. In \cite{Nouriblog} Daniel Nouri proposed to use ConvNets not just to go across the spectrogram of the Whale Calls, but try to recognize a pattern by simply looking at its image, like a human could. With this proposal he got pretty good results with a very straight forward approach. I decided to give it a try and look for most used ConvNets scheme and see their performance in this competition.
+
+
+\subsubsection{Solution Statement}\label{solution-statement}
+
 
 %habia otra de todo tipo de ballenas no?
 
@@ -189,6 +187,26 @@ solution can be expressed in mathematical or logical terms) , measurable
 (the solution can be measured by some metric and clearly observed), and
 replicable (the solution can be reproduced and occurs more than once).
 \end{comment}
+In order to perform the prediction I will try to implement well-known and widely-implemented models of neural networks.
+
+One can be the LeNet-5, which is simpler structure than the one by Krizhevsky \cite{Krizhevsky12}. Figure \ref{img:lenet5} shows the structure of the network, composed of 2 convolutional layers, 2 fully connected layers and 2 subsampling or pooling layers.
+% which is composed of several layers following the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer.
+%\pagebreak
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width= 0.95\textwidth]{images/lenet5}
+\caption{LeNet-5 structure \cite{Lecun98} \label{img:lenet5}}
+\end{figure}
+
+Other structure I can use is the one by Krizhevsky \cite{Krizhevsky12}. Figure \ref{img:imagenet12} shows the structure of the network, composed of 5 convolutional layers, 3 fully connected layers and 3 subsampling or pooling layers.
+%, which is composed of several layers following the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> CONV -> RELU -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer.
+
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width= 0.95\textwidth]{images/imagenet12}
+\caption{Network structure by Krizhevsky \cite{Krizhevsky12} \label{img:imagenet12}}
+\end{figure}
+
 
 \subsubsection{Benchmark Model}\label{benchmark-model}
 
@@ -216,28 +234,14 @@ Nevertheless, I will not be able compare the performance of my models to these r
 	\item assuming that there are enough complete data samples (train dataset), trying to increase the accuracy as much as possible (this will be the main option)
 	\item assuming the predictions generated by the winning model as test labels and them as reference to compare our model with
 \end{enumerate}
+\begin{comment}
 
-\paragraph*{Networks examples} In order to perform the prediction I will try to implement well-known and widely-implemented models of neural networks.
-
-One can be the LeNet-5, which is simpler structure than the one by Krizhevsky \cite{Krizhevsky12}. Figure \ref{img:lenet5} shows the structure of the network, composed of 2 convolutional layers, 2 fully connected layers and 2 subsampling or pooling layers.
-% which is composed of several layers following the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer.
-\pagebreak
-\begin{figure}[htpb!]
-\centering
-\includegraphics[width= 0.95\textwidth]{images/lenet5}
-\caption{LeNet-5 structure \cite{Lecun98} \label{img:lenet5}}
-\end{figure}
-
-Other structure I can use is the one by Krizhevsky \cite{Krizhevsky12}. Figure \ref{img:imagenet12} shows the structure of the network, composed of 5 convolutional layers, 3 fully connected layers and 3 subsampling or pooling layers.
-%, which is composed of several layers following the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> CONV -> RELU -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer.
-
-\begin{figure}[htpb!]
-\centering
-\includegraphics[width= 0.95\textwidth]{images/imagenet12}
-\caption{Network structure by Krizhevsky \cite{Krizhevsky12} \label{img:imagenet12}}
-\end{figure}
-
-
+However, as the competition is closed, I cannot access the test labels and compare the performance to others algorithms. Two options sound plausible:
+\begin{itemize}
+	\item divide the train dataset into: train, cross-validation and test dataset
+	\item use the winning algorithm to generate an estimation of the test labels and so increase the amount of data for training.
+\end{itemize}
+\end{comment} 
 %pero no podemos comparar directamente porque no tenemos el test dataset
 
 \subsubsection{Evaluation Metrics}\label{evaluation-metrics}
@@ -274,8 +278,6 @@ It can be also interesting to use the \textbf{confusion matrix}, which is a more
 
 
 
-
-\pagebreak
 \subsubsection{Project Design}\label{project-design}
 \begin{comment}
 \emph{(approx. 1 page)}
