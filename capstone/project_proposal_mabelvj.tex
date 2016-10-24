@@ -125,7 +125,7 @@ Read the summary of the competition for a quick overview of the impact of the re
 \end{comment}
 
 
-Impressed by the working principle of Convolutional Neural Networks, I decided looking for uses beyond pure image classification. I also had been wondering if anything related to animals and whales could be done. I started looking in the internet and found several Kaggle competitions: one whale detection though images (\href{https://www.kaggle.com/c/noaa-right-whale-recognition}{Right Whale Recognition}), and other to recognize the North Atlantic Right Whale call (\href{https://www.kaggle.com/c/whale-detection-challenge}{\competition}). Searching for applications of Convolutional Networks in sound recognition I found an entry related to the \competition. In \cite{Nouriblog} Daniel Nouri proposed to use ConvNets not just to go across the spectrogram of the Whale Calls, but try to recognize a pattern by simply looking at its image, like a human could. With this proposal he got pretty good results with a very straight forward approach. I decided to give it a try and look for most used ConvNets schemes and see their performance in this competition.
+Impressed by the working principle of Convolutional Neural Networks, I decided looking for uses beyond pure image classification. I also had been wondering if anything related to animals and whales could be done. I started looking in the internet and found several Kaggle competitions: one on whale detection through images (\href{https://www.kaggle.com/c/noaa-right-whale-recognition}{Right Whale Recognition}), and other on recognizing the North Atlantic Right Whale call (\href{https://www.kaggle.com/c/whale-detection-challenge}{\competition}). Searching for applications of Convolutional Neural Networks in sound recognition, I found an entry related to the \competition. In \cite{Nouriblog} Daniel Nouri proposed to use ConvNets not just to go across the spectrogram of the Whale Calls, but try to recognize a pattern by simply looking at its image, like a human could. With this proposal he got pretty good results with a very straight forward approach. I decided to give it a try and look for most used ConvNets schemes and see their performance in this competition.
 
 
 \subsubsection{Problem Statement}\label{problem-statement}
@@ -141,15 +141,14 @@ problem can be expressed in mathematical or logical terms) , measurable
 replicable (the problem can be reproduced and occurs more than once).
 \end{comment}
 
-Right whales make a half-dozen types of sounds, but the most characteristic one is the up-call.
+Right whales make a half-dozen types of sounds, but the most characteristic one is the up-call. This type of "contact call",  is a little like small talk-- the sound of a right whale going about its day and letting others know it is nearby. In figure \ref{img:upcall} it is represented the spectrogram of an up-call which sounds like a deep, rising “whoop” that lasts about a second (sound in \cite{CornellWeb}, other calls in \cite{CornellWeb2}).
 
-This type of "contact call",  is a little like small talk--the sound of a right whale going about its day and letting others know it is nearby. In figure \ref{img:upcall} it is represented the spectrogram of an up-call which sounds like a deep, rising “whoop” that lasts about a second sound in \cite{CornellWeb}, other calls in \cite{CornellWeb2}).
 \begin{figure}[htpb!]
 \centering
 \includegraphics[width= 0.3\textwidth]{images/sound_upcall_quiet.jpg}
 \caption{Spectrogram of a rigth whale up-call \cite{CornellWeb} \label{img:upcall}}
 \end{figure}
-The goal of this work it to be able to detect right whale up-calls, which is the most characteristic call of right whales, from the audio detected by the buoys deployed in the sea.
+The goal of this work is to present a model capable of detecting the right whale's up-call, which is the most characteristic call of this specie, from the audio detected by the buoys deployed in the sea.
 \subsubsection{Datasets and Inputs}\label{datasets-and-inputs}
 \begin{comment}
 \emph{(approx. 2-3 paragraphs)}
@@ -187,9 +186,9 @@ solution can be expressed in mathematical or logical terms) , measurable
 (the solution can be measured by some metric and clearly observed), and
 replicable (the solution can be reproduced and occurs more than once).
 \end{comment}
-In order to perform the prediction I will try to implement well-known and widely-implemented models of neural networks.
+In order to perform the prediction I will try to implement well-known and widely-implemented models of ConvNets.
 
-One can be the LeNet-5, which is simpler structure than the one by Krizhevsky \cite{Krizhevsky12}. Figure \ref{img:lenet5} shows the structure of the network, composed of 2 convolutional layers, 2 fully connected layers and 2 subsampling or pooling layers.
+One can be the LeNet-5, used for handwritten and machine-printed character recognition. Figure \ref{img:lenet5} shows the structure of the network, composed of 2 convolutional layers, 2 fully connected layers and 2 subsampling or pooling layers.
 % which is composed of several layers following the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer.
 %\pagebreak
 \begin{figure}[htpb!]
@@ -198,7 +197,7 @@ One can be the LeNet-5, which is simpler structure than the one by Krizhevsky \c
 \caption{LeNet-5 structure \cite{Lecun98} \label{img:lenet5}}
 \end{figure}
 
-Other structure I can use is the one by Krizhevsky \cite{Krizhevsky12}. Figure \ref{img:imagenet12} shows the structure of the network, composed of 5 convolutional layers, 3 fully connected layers and 3 subsampling or pooling layers.
+Other more complex option is the one by Krizhevsky \cite{Krizhevsky12}. Figure \ref{img:imagenet12} shows the structure of the network, composed of 5 convolutional layers, 3 fully connected layers and 3 subsampling or pooling layers.
 %, which is composed of several layers following the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> CONV -> RELU -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer.
 
 \begin{figure}[htpb!]
