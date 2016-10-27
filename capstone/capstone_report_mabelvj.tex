@@ -167,11 +167,9 @@ The training dataset is imbalanced, consisting of approximately 7000 Right Whale
 
 \begin{figure}[htpb!]
 \centering
-\includegraphics[width= 0.5\textwidth]{./images/2_dataset}
+\includegraphics[width= 0.65\textwidth]{./images/2_dataset}
 \caption{Dataset distribution \label{img:train_dataset}}
 \end{figure}
-
-The audio is recorded after the buoys auto-detect the characteristic up-call, biasing the dataset to that kind of calls. Thus, it makes sense to detect only that kind of call, which is the most characteristic and most frequently emitted (details on the deployment of the buoys and how the recordings are made in \cite{McDonald2002}). This call (see figure \ref{img:upcall}) has a bandwidth of about 250Hz, fact that will help to reduce information processed to that range of frequencies.
 
 
 \subsubsection{Exploratory Visualization}\label{exploratory-visualization}
@@ -182,27 +180,33 @@ Questions to ask yourself when writing this section: - \emph{Have you visualized
 
 - Compare spectrogram of some non whale to some whales and then explain why I trimmed it
 \end{comment}
-\pagebreak
+The audio is recorded after the buoys auto-detect the characteristic up-call, what biases the dataset to that kind of calls. Thus, it makes sense to detect only the up-call, which is the most characteristic and most frequently emitted call (details on the deployment of the buoys and how the recordings are made in \cite{McDonald2002}). 
 
-\subsection{Solution Statement}\label{solution-statement}
+The up-call (see figure \ref{img:upcall}) has a bandwidth of about 250 Hz, fact that will help to reduce information processed to that range of frequencies. In figure \ref{img:samples} samples corresponding to right-whale up-call show the that the energy of the signal is below 250Hz and they exhibit a clear pattern.
+In the second row, corresponding to negative identifications (label=0) this pattern is not present. However, some samples from from other whale species or corresponding to right-whale making other calls are included in the label 0. This could be the case of the sample from train6776 in figure \ref{img:samples}.
 
 
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width= \textwidth]{./images/2_samples}
+\caption{Samples for right whale up-call (label 1) and no-right-whale up-call (label 0).  \label{img:samples}}
+\end{figure} 
+Recordings have a duration of 1.8 seconds and a sampling rate of 2000Hz. The raw spectrograms of the recordings result in images of 129x23 pixels.
 
+Two problems arise from this: the excess of redundant information in frequencies not important for the detection of the up-call and the limitation in terms of the image of being processesd by the network.
+
+In order to solve the first problem, the frequency range will be limited 0-250 Hz, what will result in images of size 33x23ps. Still, this is not good for a ConvNet with lots of convolutions and pooling. It is necessary to resize the image and a good number is that multiple of 2. Hence, I will choose images to be 32x32 px and will obtain additional pixels using interpolation.
+
+\subsubsection{Algorithms and
+Techniques}\label{algorithms-and-techniques}
 \begin{comment}
-\emph{(approx. 1 paragraph)}
-
-In this section, clearly describe a solution to the problem. The
-solution should be applicable to the project domain and appropriate for
-the dataset(s) or input(s) given. Additionally, describe the solution
-thoroughly such that it is clear that the solution is quantifiable (the
-solution can be expressed in mathematical or logical terms) , measurable
-(the solution can be measured by some metric and clearly observed), and
-replicable (the solution can be reproduced and occurs more than once).
+In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section: - \emph{Are the algorithms you will use, including any default variables/parameters in the project clearly defined?} - \emph{Are the techniques to be used thoroughly discussed and justified?} - \emph{Is it made clear how the input data or datasets will be handled by the algorithms and techniques
+chosen?}
+-- Maybe : logistic and SVM?
 \end{comment}
 In order to perform the prediction I will try to implement well-known and widely-implemented models of ConvNets.
 
-One can be the LeNet-5, used for handwritten and machine-printed character recognition. Figure \ref{img:lenet5} shows the structure of the network, composed of 2 convolutional layers, 2 fully connected layers and 2 subsampling or pooling layers.
-% which is composed of several layers following the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer.
+One can be the LeNet-5, used for handwritten and machine-printed character recognition. Figure \ref{img:lenet5} shows the structure of the network, composed of 2 convolutional layers, 2 fully connected layers and 2 subsampling or pooling layers. The layers follow the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer.
 %\pagebreak
 \begin{figure}[htpb!]
 \centering
@@ -210,8 +214,7 @@ One can be the LeNet-5, used for handwritten and machine-printed character recog
 \caption{LeNet-5 structure \cite{Lecun98} \label{img:lenet5}}
 \end{figure}
 
-Other more complex option is the one by Krizhevsky \cite{Krizhevsky12}. Figure \ref{img:imagenet12} shows the structure of the network, composed of 5 convolutional layers, 3 fully connected layers and 3 subsampling or pooling layers.
-%, which is composed of several layers following the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> CONV -> RELU -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer.
+Other more complex option is the one by Krizhevsky \cite{Krizhevsky12}. Figure \ref{img:imagenet12} shows the structure of the network, composed of 5 convolutional layers, 3 fully connected layers and 3 subsampling or pooling layers. The layers follow the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> CONV -> RELU -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer.
 
 \begin{figure}[htpb!]
 \centering
@@ -220,19 +223,13 @@ Other more complex option is the one by Krizhevsky \cite{Krizhevsky12}. Figure \
 \end{figure}
 
 
-\subsection{Benchmark Model}\label{benchmark-model}
+Some parameters need adjustment to adequate the network to this work, like the size of the patch and stride of the convolutional and pooling layers, and also the depth of each convolutional layer. This issue will be discussed in later sections.
 
+\subsubsection{Benchmark}\label{benchmark}
 \begin{comment}
-\emph{(approximately 1-2 paragraphs)}
-
-In this section, provide the details for a benchmark model or result
-that relates to the domain, problem statement, and intended solution.
-Ideally, the benchmark model or result contextualizes existing methods
-or known information in the domain and problem given, which could then
-be objectively compared to the solution. Describe how the benchmark
-model or result is measurable (can be measured by some metric and
-clearly observed) with thorough detail.
+In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section: - \emph{Has some result or value been provided that acts as a benchmark for measuring performance?} - \emph{Is it clear how this result or value was obtained (whether by data or by hypothesis)?}
 \end{comment}
+
 I will try to compare the performance of the most popular ConvNets (i.e. LeNet-5 proposed by Lecun \cite{Lecun98} or the winner of the 2010 and 2012 \imagenet \, proposed by Krizhevsky \cite{Krizhevsky12}) with the performance of the winning model of the competition which is based on Gradient Boosting (SluiceBox: \href{https://github.com/nmkridler/moby}{Github}) and the Daniel Nouri's model based on Krizhevsky's 2012 ILSVRC ConvNet model \cite{Krizhevsky12} (\href{https://speakerdeck.com/dnouri/practical-deep-neural-nets-for-detecting-marine-mammals/}{source}), which first inspired this work.
 
 The Area Under the Curve (AUC) (see the Evaluation metrics section\ref{evaluation-metrics}) of these models in the public leaderboard was:
@@ -256,10 +253,7 @@ However, as the competition is closed, I cannot access the test labels and compa
 \end{comment} 
 %pero no podemos comparar directamente porque no tenemos el test dataset
 
-
-
-
-
+\pagebreak
 
 
 \bibliography{../../../../../media/mabelvj/Darsena/DropboxUbuntu/Dropbox/PhD/library}
