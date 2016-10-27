@@ -197,6 +197,12 @@ Two problems arise from this: the excess of redundant information in frequencies
 
 In order to solve the first problem, the frequency range will be limited 0-250 Hz, what will result in images of size 33x23ps. Still, this is not good for a ConvNet with lots of convolutions and pooling. It is necessary to resize the image and a good number is that multiple of 2. Hence, I will choose images to be 32x32 px and will obtain additional pixels using interpolation.
 
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width= \textwidth]{./images/2_samples_processed}
+\caption{Processed samples after mean subtraction and division by standard deviation for right whale up-call (label 1) and no-right-whale up-call (label 0).  \label{img:samples_processed}}
+\end{figure} 
+
 \subsubsection{Algorithms and
 Techniques}\label{algorithms-and-techniques}
 \begin{comment}
