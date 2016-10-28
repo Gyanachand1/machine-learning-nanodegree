@@ -182,8 +182,8 @@ Questions to ask yourself when writing this section: - \emph{Have you visualized
 \end{comment}
 The audio is recorded after the buoys auto-detect the characteristic up-call, what biases the dataset to that kind of calls. Thus, it makes sense to detect only the up-call, which is the most characteristic and most frequently emitted call (details on the deployment of the buoys and how the recordings are made in \cite{McDonald2002}). 
 
-The up-call (see figure \ref{img:upcall}) has a bandwidth of about 250 Hz, fact that will help to reduce information processed to that range of frequencies. In figure \ref{img:samples} samples corresponding to right-whale up-call show the that the energy of the signal is below 250Hz and they exhibit a clear pattern.
-In the second row, corresponding to negative identifications (label=0) this pattern is not present. However, some samples from from other whale species or corresponding to right-whale making other calls are included in the label 0. This could be the case of the sample from train6776 in figure \ref{img:samples}.
+In figure \ref{img:samples}, samples corresponding to right-whale up-call (label = 1) show the that the energy of the signal is below 250Hz (see figure \ref{img:upcall}) and they exhibit a clear pattern. This fact will help to reduce information processed to that range of frequencies. 
+In the second row, corresponding to negative identifications (label = 0) this pattern is not present. However, some samples from from other whale species or corresponding to right-whale making other calls are included in the label 0. This could be the case of the sample from train6776 in figure \ref{img:samples}.
 
 
 \begin{figure}[htpb!]
@@ -191,16 +191,33 @@ In the second row, corresponding to negative identifications (label=0) this patt
 \includegraphics[width= \textwidth]{./images/2_samples}
 \caption{Samples for right whale up-call (label 1) and no-right-whale up-call (label 0).  \label{img:samples}}
 \end{figure} 
-Recordings have a duration of 1.8 seconds and a sampling rate of 2000Hz. The raw spectrograms of the recordings result in images of 129x23 pixels.
 
-Two problems arise from this: the excess of redundant information in frequencies not important for the detection of the up-call and the limitation in terms of the image of being processesd by the network.
+The processing of the images will consist in the usual mean subtraction and normalization (division by standard deviation). The result of this process applied to \ref{img:samples} is presented in \ref{img:samples_unprocessed}.
 
-In order to solve the first problem, the frequency range will be limited 0-250 Hz, what will result in images of size 33x23ps. Still, this is not good for a ConvNet with lots of convolutions and pooling. It is necessary to resize the image and a good number is that multiple of 2. Hence, I will choose images to be 32x32 px and will obtain additional pixels using interpolation.
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width= \textwidth]{./images/2_samples_unprocessed}
+\caption{ Samples after mean subtraction and division by standard deviation for right whale up-call (label 1) and no-right-whale up-call (label 0).  \label{img:samples_unprocessed}}
+\end{figure} 
+
+However, images are not clear enough and energy where up-calls are contained is very low. In order to make them more visible, images in \ref{img:samples} are first processed applying log10 and then normalized subtracting mean and dividing by standard deviation.
 
 \begin{figure}[htpb!]
 \centering
 \includegraphics[width= \textwidth]{./images/2_samples_processed}
-\caption{Processed samples after mean subtraction and division by standard deviation for right whale up-call (label 1) and no-right-whale up-call (label 0).  \label{img:samples_processed}}
+\caption{Processed samples after mean subtraction and normalization for right whale up-call (label 1) and no-right-whale up-call (label 0).  \label{img:samples_processed}}
+\end{figure} 
+
+Recordings have a duration of 1.8 seconds and a sampling rate of 2000Hz. The raw spectrogram of the recordings result in images of 129x23 pixels.
+
+Two problems arise from this: the excess of redundant information in frequencies not important for the detection of the up-call and the limitation in terms of the image of being processed by the network.
+
+In order to solve the first problem, the frequency range will be limited 0-250 Hz, what will result in images of size 33x23 px. Still, this is not good for a ConvNet with lots of convolutions and pooling. It is necessary to resize the image and a good number is multiple of 2. Hence, I will choose images to be 32x32 px and will obtain additional pixels using interpolation.
+
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width= \textwidth]{./images/2_samples_cropped}
+\caption{Samples reduced to 32x32 pixels after log10 and mean subtraction and normalization for right whale up-call (label 1) and no-right-whale up-call (label 0).  \label{img:samples_processed}}
 \end{figure} 
 
 \subsubsection{Algorithms and
@@ -212,7 +229,27 @@ chosen?}
 \end{comment}
 In order to perform the prediction I will try to implement well-known and widely-implemented models of ConvNets.
 
-One can be the LeNet-5, used for handwritten and machine-printed character recognition. Figure \ref{img:lenet5} shows the structure of the network, composed of 2 convolutional layers, 2 fully connected layers and 2 subsampling or pooling layers. The layers follow the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer.
+Convolutional Neural Networks (ConvNets) are a type of Neural Networks (NNs) that make the assumption that inputs are images. This allows to encode certain properties into the architecture that make the forward function more efficient to implement and vastly reduce the amount of parameters in the network \ref{cs231convnets}.
+ConvNets, like other NNs, are made up of layers. These layers (called hidden layers) transform input 3D volumes to output 3D volumes with some differentiable function that may or may not have parameters\ref{cs231convnets}. This is an interesting property of ConvNets: layers have neurons arranged in 3 dimensions (width, height and depth) (see figure \ref{img:cnn}). %Each hidden layer is made up of neurons, where each neuron is fully connected to all neurons in the previous layer, and where neurons in a single layer function completely independently and do not share any connections. The last fully-connected layer is called the “output layer” and in classification settings it represents the class scores. 
+
+There are three main types of layers that are used to build ConvNets: % Convolutional Layer, Pooling Layer, and Fully-Connected Layer .
+\begin{itemize}
+	\item Convolutional Layer (CONV): computes the output of neurons connected to local regions of the input, performing the dot product between their weight and a small region that are connected to. If the input is 3D (i.e. an image with RGB colors) this layer will also be 3-dimensional. Four hyperparameters control the size of the output volume: the depth, filter size, stride and zero-padding. Depth (D) is related to the number of filters used in the layer, the filter or patch have dimensions (F) (i.e. 2x2) and stride (S) is referred to the displacement of the filter. The amount Zero-padding (P), which allows to control the spatial size of outputs.
+	\item Pooling Layer (POOL) (or Subsampling Layer): perform downsampling operation along spatial dimensions. Can be max-pooling (taking the maximum of a region), average-pooling (taking the average of a region) or other types of results from applying a function to a patch in the region. Have two main hyperparameters: the spatial extent of the filter or patch where pooling is applied (F) and the stride (S) of this filter.
+	\item Fully-Connected Layer (FC): the same as in NNs
+\end{itemize}
+
+Usually a CONV layer is followed by a RELU layer, which perform an elmentwise activation function (i.e. max(0,x),logistic function, tanh).
+
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width= 0.5\textwidth]{images/cnn}
+\caption{ConvNet structure \ref{cs231convnets}\label{img:cnn}}
+\end{figure}
+
+
+
+LeNet is one of the first successful applications of Convolutional Networks were developed by Yann LeCun in 1990’s. One of the versions of LeNet is LeNet-5, used for handwritten and machine-printed character recognition. Figure \ref{img:lenet5} shows the structure of the network, composed of 2 convolutional layers, 2 fully connected layers and 2 subsampling or pooling layers. The layers follow the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer.
 %\pagebreak
 \begin{figure}[htpb!]
 \centering
@@ -220,14 +257,14 @@ One can be the LeNet-5, used for handwritten and machine-printed character recog
 \caption{LeNet-5 structure \cite{Lecun98} \label{img:lenet5}}
 \end{figure}
 
-Other more complex option is the one by Krizhevsky \cite{Krizhevsky12}. Figure \ref{img:imagenet12} shows the structure of the network, composed of 5 convolutional layers, 3 fully connected layers and 3 subsampling or pooling layers. The layers follow the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> CONV -> RELU -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer.
+Other more complex ConvNet is AlexNet, developed by Alex Krizhevsky et al. \cite{Krizhevsky12}. The AlexNet was submitted to the ImageNet ILSVRC challenge in 2012 and significantly outperformed the second runner-up (top 5 error of 16\% compared to runner-up with 26\% error). It has a very similar architecture to LeNet, but it is  deeper, bigger, and features Convolutional Layers stacked on top of each other (previously it was common to only have a single CONV layer always immediately followed by a POOL layer)\ref{cs231convnets}. Figure \ref{img:imagenet12} shows the structure of the network, composed of 5 convolutional layers, 3 fully connected layers and 3 subsampling or pooling layers. The layers follow the sequence: INPUT -> CONV -> RELU -> SUBS -> CONV -> RELU -> SUBS -> CONV -> RELU -> CONV -> RELU -> SUBS -> FC -> RELU -> FC, for INPUT, CONV, RELU, SUBS, FC meaning respectively the Input, Convolutional, RELU, Subsampling (or max pooling) and Fully Connected layer .% Cambiar, LITERAL!
+
 
 \begin{figure}[htpb!]
 \centering
 \includegraphics[width= 0.95\textwidth]{images/imagenet12}
 \caption{Network structure by Krizhevsky \cite{Krizhevsky12} \label{img:imagenet12}}
 \end{figure}
-
 
 Some parameters need adjustment to adequate the network to this work, like the size of the patch and stride of the convolutional and pooling layers, and also the depth of each convolutional layer. This issue will be discussed in later sections.
 
@@ -236,7 +273,7 @@ Some parameters need adjustment to adequate the network to this work, like the s
 In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section: - \emph{Has some result or value been provided that acts as a benchmark for measuring performance?} - \emph{Is it clear how this result or value was obtained (whether by data or by hypothesis)?}
 \end{comment}
 
-I will try to compare the performance of the most popular ConvNets (i.e. LeNet-5 proposed by Lecun \cite{Lecun98} or the winner of the 2010 and 2012 \imagenet \, proposed by Krizhevsky \cite{Krizhevsky12}) with the performance of the winning model of the competition which is based on Gradient Boosting (SluiceBox: \href{https://github.com/nmkridler/moby}{Github}) and the Daniel Nouri's model based on Krizhevsky's 2012 ILSVRC ConvNet model \cite{Krizhevsky12} (\href{https://speakerdeck.com/dnouri/practical-deep-neural-nets-for-detecting-marine-mammals/}{source}), which first inspired this work.
+I will try to compare the performance of popular ConvNets (i.e. LeNet-5 proposed by Lecun \cite{Lecun98} or the winner of the 2010 and 2012 \imagenet \, proposed by Krizhevsky \cite{Krizhevsky12}) with the performance of the winning model of the competition which is based on Gradient Boosting (SluiceBox: \href{https://github.com/nmkridler/moby}{Github}) and the Daniel Nouri's model based on Krizhevsky's 2012 ILSVRC ConvNet model \cite{Krizhevsky12} (\href{https://speakerdeck.com/dnouri/practical-deep-neural-nets-for-detecting-marine-mammals/}{source}), which first inspired this work.
 
 The Area Under the Curve (AUC) (see the Evaluation metrics section\ref{evaluation-metrics}) of these models in the public leaderboard was:
 \begin{itemize}
