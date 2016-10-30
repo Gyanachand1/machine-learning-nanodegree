@@ -325,7 +325,50 @@ input data?} - \emph{Were there any complications with the original
 metrics or techniques that required changing prior to acquiring a
 solution?} - \emph{Was there any part of the coding process (e.g.,
 writing complicated functions) that should be documented?}
+
+            depth_1 = 6
+            depth_2 = 6
+            depth_3 = 16
+            depth_4 = 16
+            depth_5 = 120
+
+            patch_size_1 = 5
+            patch_size_2 = 2
+            patch_size_3 = 6
+            patch_size_4 = 2
+            patch_size_5 = 6
 \end{comment}
+The model implemented is LeNet-5 (see figure \ref{img:lenet5}). The only difference in the F6 layer, which has been removed. This layer is used for the detection of ASCII characters in 7x12 bitmaps, but this network does not intend to do so, it just needs to detect right-whale up-call or not.
+
+The structure of the network is as follows (F= Filter, S= Stride, D= Depth):
+\begin{itemize}
+	\item INPUT layer: 32x32 px image in grayscale represented with 8-bit number(0-255 levels).
+	\item C1 - CONV layer: F = 5x5, S = 1, D = 6
+	\item S2 - POOL layer: F = 2x2, S = 2, D = 6
+	\item C3 - CONV layer: F = 5x5, S = 1, D = 16
+	\item S4 - POOL layer: F = 2x2, S = 2, D = 16
+	\item C5 - CONV layer: F = 5x5, S = 1, D = 120
+	\item F5 - FC layer: neurons= 120 x 2, one per label(considering label 0 and label 1)
+\end{itemize}
+
+The training is performed using mini-batch gradient descent, which is a version of the true gradient descent, used when data amount is quite high. It iterates over batches in order to approach the minimum of the cost function step by step (epochs).
+
+Regularization is a common way to prevent over-fitting and L2 regularization is the most used method. It penalized the square magnitude of all parameters, adding the term $\frac{1}{2}\lambda \omega ^2$ to the prediction, for $\lambda$ the regularization strength \cite{cs231convnets}. In this work L2 regularization will be used to control the over-fitting.
+
+%L2-regularization 
+\subsubsection{Select batch-size}
+In order to select the proper batch size simulations have been performed for different learning rates.
+
+\subsubsection{Select learning rate}
+For a fixed batch size, the cost has been calculated for different learning rates.
+
+\subsubsection{Select regularization}
+For fixed batch size and learning rate , the cost has been calculated for different learning rates.
+
+\subsubsection{Dropout and Batch normalization}
+
+
+ 
 \pagebreak
 
 
