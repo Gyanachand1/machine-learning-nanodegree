@@ -1,0 +1,121 @@
+%%% Research Diary - Entry
+%%% Template by Mikhail Klassen, April 2013
+%%% 
+
+% arara: pdflatex: { draft: true }
+% arara: makeglossaries
+% arara: pdflatex: { synctex: true }    
+% arara: pdflatex: { synctex: true }  
+
+% %titlesec subcaption subfigure
+%\documentclass[11pt,letterpaper]{article}
+\usepackage[spanish, english]{babel} % Manejo de idiomas
+\usepackage{titlesec} % para anidar secciones
+%\usepackage{subfiles}
+%\usepackage[hidelinks,pagebackref,backref=page,linktocpage]{hyperref} % hide links 
+%\usepackage[pagebackref, hypertexnames=false]{hyperref} % hide links 
+%\hypersetup{linktocpage} % for links in toc. no es necesario,eliminaba otros enlaces
+%\pdfstringdefDisableCommands
+% \pdfstringdefDisableCommands to temporarily disable the command while the bookmark is written.
+%http://www.dickimaw-books.com/cgi-bin/faq.cgi?action=view&categorylabel=glossaries
+\usepackage{subcaption} % make subfigures
+\usepackage{datetime}
+\usepackage{cite}
+%\usepackage{natbib}
+%QUITADO
+\usepackage[utf8]{inputenc} %caracteres de la bibliografía
+
+\usepackage{textcase} % Makelowercase...
+\usepackage[toc,page]{appendix} % appendix and toc
+\usepackage[acronym,toc,style=treenoname,order=word,subentrycounter]{glossaries}
+%in subsection: acrfull instead of glsentryfull
+%\renewcommand{\glscaption}{\robustify{\gls}}
+%\robustify{\gls}% Make \gls not fragile
+%\protect
+\makeindex
+\makeglossaries
+%\makeglossaries main_page.tex
+%\newcommand{\document}{\title}
+
+\usepackage{comment}
+\usepackage{cite}
+
+
+\usepackage{mathrsfs,amsmath} 
+\usepackage[makeroom]{cancel}
+\usepackage{soul} % para que al subrayar no se salga de los márgenes
+\usepackage{amsfonts} % for the \checkmark command 
+% % % Cross mark
+\usepackage{pifont}
+\newcommand{\crossmark}{\hspace{1pt}\ding{55}}
+
+\usepackage{enumitem} % personalized lists
+
+%\usepackage{hyperref} % link to the page on the toc
+\begin{comment}
+\ersetup{
+    colorlinks,
+    citecolor=black,
+    filecolor=black,
+    linkcolor=black,
+    urlcolor=black,
+	linktocpage}
+\end{comment}
+\usepackage{graphicx} % includegraphics command is implemented here
+\usepackage{csquotes} % in order to do citations  \blockcquote{bibid}{text}
+\usepackage{amsmath}
+\usepackage{mathtools}  % mathematical symbols. loads: \usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tabularx} % multiple line equations (see SmithChart) http://tex.stackexchange.com/questions/33433/how-to-place-and-number-3-short-equations-in-one-line
+\usepackage{steinmetz} % loads the phase function \phase
+% % cleveref 
+\usepackage[noabbrev]{cleveref} % noabbrev,capitalize,nameinlink
+\crefformat{equation}{equation~#2#1#3}
+\Crefformat{equation}{Equation~#2#1#3}
+%newcommand{\workingDate}{\textsc{2013 $|$ January $|$ 01}}
+%\usepackage{tabularx} % to adjust table widths
+%Change pagewidth for tables
+%\usepackage[showframe=true]{geometry}
+%\usepackage[showframe=false]{geometry}
+\usepackage{changepage}
+%%\begin{adjustwidth}{-2cm}{} \end{adjustwidth}
+% also
+%\renewcommand{\tabcolsep}{4.6pt}
+%\begin{tabular}{@{} *{21}{l} @{}} % use "@{}" suppresses whitespace at start and end of table
+\newcommand{\userName}{Isabel María Villalba Jiménez}
+\newcommand{\institution}{Universitat Politècnica de Catalunya}
+% To add your univeristy logo to the upper right, simply
+% upload a file named "logo.png" using the files menu above.
+
+\usepackage[overload]{empheq}
+\begin{comment}
+		\begin{subequations}
+		\begin{align}[left = \empheqlbrace\,]
+		\begin{equation}
+		\Delta \phi_1 \left(t\right)=\eta V_1 sin\left(\omega_m t\right)-\frac{\pi}{2}\\ 
+		\end{equation}    
+		\begin{equation}
+		\Delta \phi_2 \left(t\right)=\eta V_2 sin\left(\omega_m t\right)\\
+		\end{equation}			
+		\end{align}
+		\end{subequations}
+\end{comment}
+
+		
+		
+\sloppy % avoid exceeding right margin
+
+
+
+
+
+		\begin{comment}
+		% IMPORTANT
+		\begin{align}
+		E_{out}=&\left[------------\\
+		&\left. --------------------\right.\\
+		&\left. ------------------- \right] e^{j\omega_c t}		
+		\label{eq:MZM_04}
+		\end{align} 
+		\end{comment}
+
