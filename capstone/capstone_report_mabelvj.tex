@@ -428,13 +428,36 @@ AUC obtained is of ... for x samples , whereas SluiceBox obtained 0.98410 AUC an
 %In this section, you will need to provide some form of visualization that emphasizes an important quality about the project. It is much more free-form, but should reasonably support a significant result or characteristic about the problem that you want to discuss. Questions to ask yourself when writing this section: - \emph{Have you visualized a relevant or important quality about the problem, dataset, input data, or results?} - \emph{Is the visualization thoroughly analyzed and discussed?} - \emph{If a plot is provided, are the axes, title, and datum clearly defined?}
 
 %CAPAS
+\newcommand{\lr}{0.0005}
+In this section I will try to give an insight of the network, presenting, as it is frequently done, the characteristics f the first layer. Figure \ref{img:weights} it is presented the evolution of the filters of the first CONV layer (F=5x5) with depth 6 (D=6). It is clear how, due to backprogagation and minimization of the cost function, weights are changed and they evolve to new and more adequate values for prediction.
+Figure \ref{img:biases} shows the evolution of the biases with the number of epochs and how they tend stabilize. Finally, figure \ref{img:activation} shows the output every 500 epochs for some samples.
+
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width = 0.35\textwidth]{{images/weights_batch_size_5_learning_rate_\lr0}.png}
+\caption{Weights of the first layer with 6 filters of depth every 500 epochs for batch size=5 and learning rate $\alpha$=\lr \label{img:weights}}
+\end{figure} 
+
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width = 0.75\textwidth]{{images/bias_batch_size_5_learning_rate_\lr0}.png}
+\caption{Biases of the first layer with 6 filters of depth for batch size=5 and learning rate $\alpha$=\lr  \label{img:biases}}
+\end{figure} 
+
+
+
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width = 0.35\textwidth]{{images/activation_batch_size_5_learning_rate_\lr0}.png}
+\caption{Activation of the first layer with 6 filters of depth every 500 epochs for batch size=5 and learning rate $\alpha$=\lr  \label{img:activation}}
+\end{figure} 
 \subsection{Reflection}\label{reflection}
 
 %In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section: - \emph{Have you thoroughly summarized the entire process you used for this project?} - \emph{Were there any interesting aspects of the project?} - \emph{Were there any difficult aspects of the project?} - \emph{Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?}
 In this project it is presented how simple ConvNets can be used to label data from the image of the spectrogram, as it in many classification problems.
 
 In this case, the use of LeNet-5 has given a X AUC, which is really good given the low complexity of the network.
-%Coment batch... and other parameters.
+%Comment batch... and other parameters.
 \subsection{Improvement}\label{improvement}
 
 %In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution.
