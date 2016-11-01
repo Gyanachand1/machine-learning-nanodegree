@@ -381,21 +381,36 @@ The process followed has been one the iteration over different parameters to obt
 In order to select the proper batch size simulations have been performed for different learning rates. It can be seen that for the same learning rate an a batch size of X reaches a greater value.
 
 After many simulations, I have observed that there must be a trade-off between batch-size and instability. The bigger the batch, the stabler the curves, but the poorer the performance since the number of epochs is smaller. The batch size must be big enough to provide a less noisy curve but small enough to give good values of prediction.
+
+From figure \ref{img:batch_comparasion} it seems that a good compromise value is a batch size of 5.
+
 \begin{figure}[htpb!]
 \centering
-\includegraphics[width = 0.6\textwidth]{{images/learning_rate_\lr0_val_auc}.png}
-\caption{AUC for different batch sizes and a learning rate $\alpha$=\lr  \label{img:batch}}
+\includegraphics[width = 0.6\textwidth]{{images/learning_rate_\lr0_val_error_AWS_val_12_}.png}
+\caption{Error curve for the validation dataset, for different batch sizes and a learning rate $\alpha$=\lr  \label{img:batch_comparasion}}
 \end{figure} 
 
+
+
+
+
 \subsubsection{Select learning rate}
-Secondly, for a fixed batch size, the cost has been calculated for different learning rates.  It can be seen that for the selected batch size, a learning rate of X reaches a greater value.
+Secondly, for a fixed batch size , the cost has been calculated for different learning rates. Learning rates too big may not find the minimum and converge too fast. Small learning rate may be too slow and not fast enough for small dataset like the one in this work. A compromise value must be chosen, showing a slope good that guarantees convergence. Figure \ref{img:learning_rate} shows that for the selected batch size of 5, a learning rate $\alpha$ of 0.0005  seems like a good value. Figure \ref{img:batch} shows that there is not over-fitting, since there is no gap between the training curve and the validation and test curves.
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width = 0.6\textwidth]{{images/batch_size_5_val_auc_AWS_val_08}.png}
+\caption{AUC for the validation dataset, for different learning rates and a batch size = 5  \label{img:learning_rate}}
+\end{figure} 
+
 \begin{figure}[htpb!]
 \centering
 \includegraphics[width = 0.6\textwidth]{{images/learning_rate_\lr0_val_auc}.png}
-\caption{AUC for batch size = 5 and learning rate $\alpha$=\lr  \label{img:learning_rate}}
+\caption{AUC for batch size = 5 and learning rate $\alpha$=\lr   \label{img:batch}}
 \end{figure} 
+
 \subsubsection{Select regularization}
-For fixed batch size and learning rate , the cost has been calculated for different learning rates.  It can be seen that for the selected batch size and learning rate, a regularization parameter of X reaches a greater value.
+Finally, for fixed batch size and learning rate, the AUC has been calculated for regularization parameters. Regularization is a good way to limit over-fitting, allowing the model to generalize better. Figure \ref{img:regularization} shows that for the selected batch size of 5 and learning rate of 0.0005 a good regularization value is 0.95, since it allows to reach a greater AUC.
+
 \begin{figure}[htpb!]
 \centering
 \includegraphics[width = 0.6\textwidth]{{images/batch_size_5_lr_\lr00_val_auc_AWS_reg_0.9_to_0.01}.png}
