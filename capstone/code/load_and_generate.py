@@ -210,7 +210,7 @@ def create_label_folders(data_folder, dataset_folder, file_name):
 			#print file_to_copy
 			#print (os.path.join(data_folder, dataset_folder,file_to_copy+'.aiff'))
 			#Sometimes add +.aiff because it loads he file_names without extension
-			if file_to_copy[-4:]!= '.aiff':
+			if file_to_copy[-5:]!= '.aiff':
 				file_to_copy= file_to_copy + '.aiff'
 			if os.path.isfile(os.path.join(data_folder, dataset_folder,file_to_copy)):
 				#print data_folder + file_to_copy
