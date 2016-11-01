@@ -375,19 +375,34 @@ The network has been implemented making use of Tensorflow, using the basic of Co
 In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation.
 For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section: - \emph{Has an initial solution been found and clearly reported?} - \emph{Is the process of improvement clearly documented, such as what techniques were used?} - \emph{Are intermediate and final solutions clearly reported as the process is improved?}
 \end{comment}
-The process followed has been one the iteration over different parameters to obtain the best combination.
+\newcommand{\lr}{0.0005}
+The process followed has been one the iteration over different parameters to obtain the best combination. Figure x shows there is little over fitting, since validation and test curves follow the training curve.
 \subsubsection{Select batch-size}
 In order to select the proper batch size simulations have been performed for different learning rates. It can be seen that for the same learning rate an a batch size of X reaches a greater value.
 
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width = 0.6\textwidth]{{images/learning_rate_\lr0_val_auc}.png}
+\caption{AUC for different batch sizes and a learning rate $\alpha$=\lr  \label{img:batch}}
+\end{figure} 
+
 \subsubsection{Select learning rate}
 Secondly, for a fixed batch size, the cost has been calculated for different learning rates.  It can be seen that for the selected batch size, a learning rate of X reaches a greater value.
-
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width = 0.6\textwidth]{{images/learning_rate_\lr0_val_auc}.png}
+\caption{AUC for batch size = 5 and learning rate $\alpha$=\lr  \label{img:learning_rate}}
+\end{figure} 
 \subsubsection{Select regularization}
 For fixed batch size and learning rate , the cost has been calculated for different learning rates.  It can be seen that for the selected batch size and learning rate, a regularization parameter of X reaches a greater value.
+\begin{figure}[htpb!]
+\centering
+\includegraphics[width = 0.6\textwidth]{{images/batch_size_5_lr_\lr00_val_auc_AWS_reg_0.9_to_0.01}.png}
+\caption{AUC in the validation dataset for different regularization values, batch size = 5 and learning rate $\alpha$=\lr  \label{img:regularization}}
+\end{figure} 
 
-
-\subsubsection{Dropout and Batch normalization}
-
+%\subsubsection{Dropout and Batch normalization}
+%\pagebreak
 \section{Results}\label{iv.-results}
 
 %\emph{(approx. 2-3 pages)}
@@ -398,7 +413,7 @@ In this section, the final model and any supporting qualities should be evaluate
 \end{comment}
 The model used is the LeNet-5 \cite{Lecun98}. In figure X it is presented the error for different epochs.
 
-In table X it is presented the confusion matrix.
+%In table X it is presented the confusion matrix.
 
 In figure X it is also presented the AUC por different epochs.
 
@@ -409,7 +424,9 @@ One problem I faced when training the model was the limitation in terms of data 
 \begin{comment}
 In this section, your model's final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section: - \emph{Are the final results found stronger than the benchmark result reported earlier?} - \emph{Have you thoroughly analyzed and discussed the final solution?} - \emph{Is the final solution significant enough to have solved the problem?}
 \end{comment}
-AUC obtained is of ... for x samples , whereas SluiceBox obtained 0.98410 AUC and Nuori 0.98061.
+This work has shown the use of simple ConvNet for audio recognition, obtaining good performance with an AUC of up to 0.958, whereas more complex models as SluiceBox obtained 0.98410 AUC and Nuori 0.98061. 
+
+One of the advantages of simpler networks relies in the reduction of time required for training the model, resulting in less computer requirements. With a vast dataset, the system would increase significantly the performance and equal those with more complex stucture, making it a great, simple and nice choice. %less capacity and less time for training
 
 
 \section{Conclusion}\label{v.-conclusion}
@@ -420,7 +437,7 @@ AUC obtained is of ... for x samples , whereas SluiceBox obtained 0.98410 AUC an
 %In this section, you will need to provide some form of visualization that emphasizes an important quality about the project. It is much more free-form, but should reasonably support a significant result or characteristic about the problem that you want to discuss. Questions to ask yourself when writing this section: - \emph{Have you visualized a relevant or important quality about the problem, dataset, input data, or results?} - \emph{Is the visualization thoroughly analyzed and discussed?} - \emph{If a plot is provided, are the axes, title, and datum clearly defined?}
 
 %CAPAS
-\newcommand{\lr}{0.0005}
+\renewcommand{\lr}{0.0005}
 In this section I will try to give an insight of the network, presenting, as it is frequently done, the characteristics f the first layer. Figure \ref{img:weights} it is presented the evolution of the filters of the first CONV layer (F=5x5) with depth 6 (D=6). It is clear how, due to backprogagation and minimization of the cost function, weights are changed and they evolve to new and more adequate values for prediction.
 Figure \ref{img:biases} shows the evolution of the biases with the number of epochs and how they tend stabilize. Finally, figure \ref{img:activation} shows the output every 500 epochs for some samples.
 
@@ -432,7 +449,7 @@ Figure \ref{img:biases} shows the evolution of the biases with the number of epo
 
 \begin{figure}[htpb!]
 \centering
-\includegraphics[width = 0.75\textwidth]{{images/bias_batch_size_5_learning_rate_\lr0}.png}
+\includegraphics[width = 0.6\textwidth]{{images/bias_batch_size_5_learning_rate_\lr0}.png}
 \caption{Biases of the first layer with 6 filters of depth for batch size=5 and learning rate $\alpha$=\lr  \label{img:biases}}
 \end{figure} 
 
@@ -454,8 +471,12 @@ In this case, the use of LeNet-5 has given a X AUC, which is really good given t
 
 %In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution.
 % Questions to ask yourself when writing this section: - \emph{Are there further improvements that could be made on the algorithms or techniques you used in this project?} - \emph{Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?} - \emph{If you used your final solution as the new benchmark, do you think an even better solution exists?}
-The design of this ConvNet has low complexity. More complex models are good start points to increase the performance and achieve better results. Good examples of models to try are AlexNet \cite{Krizhevsky12} or GoogLeNet \cite{Szegedy16}. Also, methods to make faster training, as Batch Normalization may lead to better results (include reference).
 
+In this work, the problem is to recognize a simple and very specific spectrogram pattern from in a form of an image. A good rule of thumb for this is the simpler, the better and LeNet-5 achieves good performance with a simple structure.  
+
+The complexity of the model should not be the focus, since like in any Machine Learning problem, the most important factor is the amount of data. Collecting more samples and extending the training would make LeNet-5 a good competitor against other models achieving better performance with over-complicated models.
+
+Once resolved the issue with the amount of data, more complex models are good start points to increase the performance and achieve better results and compare the trade-off between complexity with results. Good examples of models to try are AlexNet \cite{Krizhevsky12} or GoogLeNet \cite{Szegedy16}. Dropout has not been applied in this work, since the network has lots of max-pooling layers and regularization, and in these cases, the use of dropout is not clear. Introducing dropout could be a good option to try. Also, methods to make faster training, as Batch Normalization may lead to better results \cite{szegedy15batch}.
 \begin{comment}
 
 \begin{center}\rule{3in}{0.4pt}\end{center}
@@ -477,9 +498,10 @@ The design of this ConvNet has low complexity. More complex models are good star
 \item
   Is the code that implements your solution easily readable and properly commented?
 \item
-  Does the code execute without error and produce results similar to those reported?
+  Does the code execute without error and produce results %mac  similar to those reported?
 \end{itemize}
 \end{comment}
-\bibliography{../../../../../media/mabelvj/Darsena/DropboxUbuntu/Dropbox/PhD/library}
+\bibliography{../../../Dropbox/PhD/library}
+%\bibliography{../../../../../media/mabelvj/Darsena/DropboxUbuntu/Dropbox/PhD/library}
 
 \end{document}
