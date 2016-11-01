@@ -409,12 +409,23 @@ Secondly, for a fixed batch size , the cost has been calculated for different le
 \end{figure} 
 
 \subsubsection{Select regularization}
-Finally, for fixed batch size and learning rate, the AUC has been calculated for regularization parameters. Regularization is a good way to limit over-fitting, allowing the model to generalize better. Figure \ref{img:regularization} shows that for the selected batch size of 5 and learning rate of 0.0005 a good regularization value is 0.95, since it allows to reach a greater AUC.
+Finally, for fixed batch size and learning rate, the AUC has been calculated for regularization parameters. Regularization is a good way to limit over-fitting, allowing the model to generalize better. Figure \ref{img:regularization} shows the AUC curve for different values of the regularization parameters. Figure \ref{img:regularization_1} shows that a good value for the regularization parameter can is near 0.95, and figure \cref{img:regularization_2} shows that for the selected batch size of 5 and learning rate of 0.0005 a good regularization value is 0.97, since it allows to reach a greater AUC.
 
 \begin{figure}[htpb!]
-\centering
-\includegraphics[width = 0.6\textwidth]{{images/batch_size_5_lr_\lr00_val_auc_AWS_reg_0.9_to_0.01}.png}
-\caption{AUC in the validation dataset for different regularization values, batch size = 5 and learning rate $\alpha$=\lr  \label{img:regularization}}
+	\centering
+
+    \begin{subfigure}[l]{0.5\textwidth}
+		%\centering
+		\includegraphics[width=\linewidth]{{images/batch_size_5_lr_\lr00_val_auc_AWS_reg_0.9_to_0.01}.png}
+		\caption{\label{img:regularization_1}}
+    \end{subfigure}%
+    ~
+    \begin{subfigure}[r]{0.5\textwidth}
+    		%\centering
+    		\includegraphics[width=\linewidth]{{images/batch_size_5_lr_\lr00_val_auc_AWS_val_09}.png}
+    		\caption{  \label{img:regularization_2}}
+    \end{subfigure}%
+    \caption{AUC in the validation dataset for different regularization values, batch size = 5 and learning rate $\alpha$=\lr \ref{img:regularization}}
 \end{figure} 
 
 %\subsubsection{Dropout and Batch normalization}
