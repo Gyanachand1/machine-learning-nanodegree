@@ -380,6 +380,7 @@ The process followed has been one the iteration over different parameters to obt
 \subsubsection{Select batch-size}
 In order to select the proper batch size simulations have been performed for different learning rates. It can be seen that for the same learning rate an a batch size of X reaches a greater value.
 
+After many simulations, I have observed that there must be a trade-off between batch-size and instability. The bigger the batch, the stabler the curves, but the poorer the performance since the number of epochs is smaller. The batch size must be big enough to provide a less noisy curve but small enough to give good values of prediction.
 \begin{figure}[htpb!]
 \centering
 \includegraphics[width = 0.6\textwidth]{{images/learning_rate_\lr0_val_auc}.png}
