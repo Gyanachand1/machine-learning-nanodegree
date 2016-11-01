@@ -1,4 +1,6 @@
 from multiprocessing import Pool
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import aifc
@@ -112,12 +114,12 @@ def load_image(folder, min_num_images, image_height = 129, image_width = 23 ):
   image_files = os.listdir(folder)
   dataset = np.ndarray(shape=(len(image_files), image_height, image_width),
                          dtype=np.float32)
-                         
+  print folder                       
   num_images = 0
   for i, image in enumerate(image_files):
     image_file = os.path.join(folder, image)
-    #print "Image %d... \n"%i
-    #print image_file
+    print "Image %d... \n"%i
+    print image_file
     #print '\n'
     start_time = time.time()
     try:
@@ -208,10 +210,13 @@ def create_label_folders(data_folder, dataset_folder, file_name):
 		
 		for file_to_copy in files_names:
 			#print file_to_copy
-			#print (os.path.join(data_folder, dataset_folder,file_to_copy+'.aiff'))
-			if os.path.isfile(os.path.join(data_folder, dataset_folder,file_to_copy+'.aiff')):
-				print data_folder + file_to_copy
-				shutil.copyfile(os.path.join(data_folder, dataset_folder,file_to_copy+'.aiff') , os.path.join(data_folder,dataset_folder,train_folder,file_to_copy+'.aiff') )
+			#print (os.path.join(data_folder, dataset_folder,file_to_copy))
+			#print file_to_copy[-5:]
+			if file_to_copy[-5:]!= '.aiff':
+				file_to_copy= file_to_copy + '.aiff'
+			if os.path.isfile(os.path.join(data_folder, dataset_folder,file_to_copy)):
+				#print data_folder + file_to_copy
+				shutil.copyfile(os.path.join(data_folder, dataset_folder,file_to_copy) , os.path.join(data_folder,dataset_folder,train_folder,file_to_copy) )
 	pass
 	
 
