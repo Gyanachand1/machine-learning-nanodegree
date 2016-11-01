@@ -14,10 +14,10 @@ image_height = 32
 image_width = 32
 
 image_size = image_height*image_width
-#create_label_folders('../whale-inputs/data/', 'test', 'test.csv') #run the first time to separate labels into subfolders and then be able to balance the datasets, then comment.
+create_label_folders('../whale-inputs/data/', 'test', 'test.csv') #run the first time to separate labels into subfolders and then be able to balance the datasets, then comment.
 
 test_folders = maybe_extract(os.path.abspath( '../whale-inputs/data/test/'))
-test_datasets = maybe_pickle(test_folders, 10000, False, image_height, image_width ) #True to force repeating the processing 
+test_datasets = maybe_pickle(test_folders, 10000, False, image_height, image_width) #True to force repeating the processing 
 
 
 

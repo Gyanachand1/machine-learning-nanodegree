@@ -209,11 +209,13 @@ def create_label_folders(data_folder, dataset_folder, file_name):
 		for file_to_copy in files_names:
 			#print file_to_copy
 			#print (os.path.join(data_folder, dataset_folder,file_to_copy+'.aiff'))
-			if os.path.isfile(os.path.join(data_folder, dataset_folder,file_to_copy+'.aiff')):
-				print data_folder + file_to_copy
-				shutil.copyfile(os.path.join(data_folder, dataset_folder,file_to_copy+'.aiff') , os.path.join(data_folder,dataset_folder,train_folder,file_to_copy+'.aiff') )
+			#Sometimes add +.aiff because it loads he file_names without extension
+			if file_to_copy[-4:]!= '.aiff':
+				file_to_copy= file_to_copy + '.aiff'
+			if os.path.isfile(os.path.join(data_folder, dataset_folder,file_to_copy)):
+				#print data_folder + file_to_copy
+				shutil.copyfile(os.path.join(data_folder, dataset_folder,file_to_copy) , os.path.join(data_folder,dataset_folder,train_folder,file_to_copy+'.aiff') )
 	pass
-	
 
 
 def maybe_extract(filename, force=False):

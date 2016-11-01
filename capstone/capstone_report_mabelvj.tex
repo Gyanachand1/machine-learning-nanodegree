@@ -343,24 +343,17 @@ writing complicated functions) that should be documented?}
             patch_size_5 = 6
             
 
-In the training phase of the CNN where we estimate the CNV and FC layer filter taps, we use stochastic
-gradient descent algorithm [7]. Training is done offline through backward propagation algorithms [8]. We
-have built the CNV using Tensor Flow [9] as provided part of this submission.
-Gradient descent algorithms are very popular in solving quadratic equations though dynamic
-programming. Stochastic gradient descent algorithm is a variant of gradient descent where we use a small
-random sample of data at every iteration in order to find optimum weights of the CNN.
-One of the important parameters of gradient descent is the learning rate which is typically represented
-by α. Basically, large α helps gradient descent to converge faster but with decent quality of weights, while
-small α has lower converge speed but achieves better weight. Thus, we have changed the α parameter
-along the training with certain decay factor. We start with large α value and reduce it as we iterate over
-the dataset. This has improved the accuracy by couple of percent compared to a fix α value.
+In the training phase of the CNN where we estimate the CNV and FC layer filter taps, we use stochastic gradient descent algorithm [7]. Training is done offline through backward propagation algorithms [8]. We have built the CNV using Tensor Flow [9] as provided part of this submission.
+Gradient descent algorithms are very popular in solving quadratic equations though dynamic programming. Stochastic gradient descent algorithm is a variant of gradient descent where we use a small random sample of data at every iteration in order to find optimum weights of the CNN.
+One of the important parameters of gradient descent is the learning rate which is typically represented by α. Basically, large α helps gradient descent to converge faster but with decent quality of weights, while
+small α has lower converge speed but achieves better weight. Thus, we have changed the α parameter along the training with certain decay factor. We start with large α value and reduce it as we iterate over the dataset. This has improved the accuracy by couple of percent compared to a fix α value.
 
 \end{comment}
 The model implemented is LeNet-5 (see figure \ref{img:lenet5}). The only difference in the F6 layer, which has been removed. This layer is used for the detection of ASCII characters in 7x12 bitmaps, but this network does not intend to do so, it just needs to detect right-whale up-call or not.
 
 The structure of the network is as follows (F= Filter, S= Stride, D= Depth):
 \begin{itemize}
-	\item INPUT layer: 32x32 px image in grayscale represented with 8-bit number (0-255 levels).
+	\item INPUT layer: 32x32 px image in gray scale represented with 8-bit number (0-255 levels).
 	\item C1 - CONV layer: F = 5x5, S = 1, D = 6
 	\item S2 - POOL layer: F = 2x2, S = 2, D = 6
 	\item C3 - CONV layer: F = 5x5, S = 1, D = 16
@@ -375,24 +368,23 @@ Gradient descent main parameter is the learning rate ($\alpha$). The learning ra
 
 Regularization is a common way to prevent over-fitting and the most used method is L2 regularization. This type of regularization penalizes the square magnitude of all parameters, adding the term $\frac{1}{2}\lambda \omega ^2$ to the prediction, for $\lambda$ the regularization strength \cite{cs231convnets}. In this work L2 regularization will be used to control the over-fitting.
 
-The network has been implemented making use of Tensforflow, using the basic of ConvNets explained in the Udacity Deep Learning Course \cite{deepgithub} and then extending the functionality to more complex networks.
-
-\pagebreak
+The network has been implemented making use of Tensorflow, using the basic of ConvNets explained in the Udacity Deep Learning Course \cite{deepgithub} and then extending the functionality to more complex networks.
 
 \subsection{Refinement}\label{refinement}
 \begin{comment}
 In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation.
 For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section: - \emph{Has an initial solution been found and clearly reported?} - \emph{Is the process of improvement clearly documented, such as what techniques were used?} - \emph{Are intermediate and final solutions clearly reported as the process is improved?}
 \end{comment}
-The process followed has been one the iteration over different parameters to obtain the best combination
+The process followed has been one the iteration over different parameters to obtain the best combination.
 \subsubsection{Select batch-size}
-In order to select the proper batch size simulations have been performed for different learning rates.
+In order to select the proper batch size simulations have been performed for different learning rates. It can be seen that for the same learning rate an a batch size of X reaches a greater value.
 
 \subsubsection{Select learning rate}
-For a fixed batch size, the cost has been calculated for different learning rates.
+Secondly, for a fixed batch size, the cost has been calculated for different learning rates.  It can be seen that for the selected batch size, a learning rate of X reaches a greater value.
 
 \subsubsection{Select regularization}
-For fixed batch size and learning rate , the cost has been calculated for different learning rates.
+For fixed batch size and learning rate , the cost has been calculated for different learning rates.  It can be seen that for the selected batch size and learning rate, a regularization parameter of X reaches a greater value.
+
 
 \subsubsection{Dropout and Batch normalization}
 
@@ -454,15 +446,15 @@ Figure \ref{img:biases} shows the evolution of the biases with the number of epo
 \subsection{Reflection}\label{reflection}
 
 %In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section: - \emph{Have you thoroughly summarized the entire process you used for this project?} - \emph{Were there any interesting aspects of the project?} - \emph{Were there any difficult aspects of the project?} - \emph{Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?}
-In this project it is presented how simple ConvNets can be used to label data from the image of the spectrogram, as it in many classification problems.
+In this project, it is presented how simple ConvNets can be used to label data from the image of the spectrogram, as it in many classification problems. More complex network may achieve better results, but for an image of 32x32px, I prefer to take the strategy: the simpler, the better.
 
-In this case, the use of LeNet-5 has given a X AUC, which is really good given the low complexity of the network.
+In this case, the use of LeNet-5 has given a X AUC, which is really good given the low complexity of the network. 
 %Comment batch... and other parameters.
 \subsection{Improvement}\label{improvement}
 
 %In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution.
 % Questions to ask yourself when writing this section: - \emph{Are there further improvements that could be made on the algorithms or techniques you used in this project?} - \emph{Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?} - \emph{If you used your final solution as the new benchmark, do you think an even better solution exists?}
-The design of this ConvNet has low complexity. More complex models are good start points to increase the performance. Good examples of models to try are AlexNet \cite{Krizhevsky12} or GoogLeNet \cite{Szegedy16}. Also, methods to make faster training, as Batch Normalization may lead to better results (include reference).
+The design of this ConvNet has low complexity. More complex models are good start points to increase the performance and achieve better results. Good examples of models to try are AlexNet \cite{Krizhevsky12} or GoogLeNet \cite{Szegedy16}. Also, methods to make faster training, as Batch Normalization may lead to better results (include reference).
 
 \begin{comment}
 
