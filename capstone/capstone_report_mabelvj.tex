@@ -158,7 +158,7 @@ Other interesting tool can be the \textbf{confusion matrix}, which is a more det
 
 Another important measure can be the \textbf{error rate} vs iterations for different batch sizes. The error rate used can be the percentage of wrong classified samples. This metric is widely used in literature for ConvNets \cite{Lecun98,Krizhevsky12} as it gives an insight of the state of training of the network. It is quite common to detect over-training. When this phenomenon occurs, the training error keeps decreasing over time, but the test error goes through a minimum and then starts increasing after a certain number of iteration \cite{Lecun98}.
 
-
+\pagebreak
 
 \section{Analysis}\label{ii.-analysis}
 %\emph{(approx. 2-4 pages)}
@@ -214,7 +214,7 @@ Recordings have a duration of 1.8 seconds and a sampling rate of 2000 Hz. The ra
 
 \begin{figure}[htpb!]
 \centering
-\includegraphics[width= \textwidth]{./images/2_samples}
+\includegraphics[width= 0.8\textwidth]{./images/2_samples}
 \caption{Samples for right whale up-call (label 1) and no-right-whale up-call (label 0).  \label{img:samples}}
 \end{figure} 
 
@@ -505,21 +505,22 @@ One of the advantages of simpler networks relies upon the reduction of time requ
 
 %CAPAS
 \renewcommand{\lr}{0.0005}
-In this section I will try to give an insight of the network, presenting, as it is frequently done, the characteristics f the first layer. Figure \ref{img:weights} it is presented the evolution of the filters of the first CONV layer (F=5x5) with depth 6 (D=6). It is clear how, due to backpropagation and minimization of the cost function, weights are changed and they evolve to new and more adequate values for prediction. Figure \ref{img:biases} shows the evolution of the biases with the number of epochs and how they tend to stabilize. Finally, figure \ref{img:activation} shows the output every 500 epochs for some samples.
+In this section I will try to give an insight of the network, presenting, as it is frequently done, the characteristics f the first layer. Figure \ref{img:weights} it is presented the evolution of the filters of the first CONV layer (F=5x5) with depth 6 (D=6). These filters are the ones convoluting and sweeping through the image and contain the weights fond the CONV layer neurons. It is clear how, due to backpropagation and minimization of the cost function, weights are changed and they evolve to new and more adequate values for prediction. In fact, the six filters start very undefined and they adapt to their final value. 
 
-
+Figure \ref{img:biases} shows the evolution of the biases with the number of epochs and how they tend to stabilize. These biases are the biases of the CONV layer and they change to minimize the cost function.
 \begin{figure}[htpb!]
 	\centering
 
     \begin{subfigure}[l]{0.4\textwidth}
 		\centering
 		\includegraphics[width = \linewidth]{{images/weights_batch_size_5_learning_rate_\lr0}.png}
+		%\includegraphics[width = \linewidth]{{images/weights_batch_size_5_learning_rate_\lr0_AWS_log_07}.png}
 		\caption{ \label{img:weights}}
     \end{subfigure}%
     ~
     \begin{subfigure}[r]{0.6\textwidth}
 		\centering
-		\includegraphics[width = \linewidth]{{images/bias_batch_size_5_learning_rate_\lr0}.png}
+		\includegraphics[width = \linewidth]{{images/bias_batch_size_5_learning_rate_\lr0_AWS_log_05}.png}
 		\caption{\label{img:biases}}
     \end{subfigure}%
     \caption{(a) Weights and (b) biases of the first layer with 6 filters of depth every 500 epochs for batch size=5, learning rate $\alpha$=\lr  and regularization parameter= 0.97\label{img:first_layer}}
@@ -527,9 +528,14 @@ In this section I will try to give an insight of the network, presenting, as it 
 
 
 
+Finally, figure \ref{img:activation} shows the output every 500 epochs for some samples. It is not clear, but in some of the squares it can be seen the shape of a the up-call.
+
+
+
+
 \begin{figure}[htpb!]
 \centering
-\includegraphics[width = 0.35\textwidth]{{images/activation_batch_size_5_learning_rate_\lr0}.png}
+\includegraphics[width = 0.4\textwidth]{{images/activation_batch_size_5_learning_rate_\lr0}.png}
 \caption{Activation of the first layer with 6 filters of depth every 500 epochs for batch size=5 and learning rate $\alpha$=\lr  \label{img:activation}}
 \end{figure} 
 \subsection{Reflection}\label{reflection}
