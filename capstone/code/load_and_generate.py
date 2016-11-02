@@ -82,8 +82,8 @@ def process_image(file_name, enlarge = True, image_height = 129, image_width = 2
 		from sklearn import preprocessing
 		
 		if enlarge: #change image size
-			#Pxx_prep = imresize(np.log10(Pxx),(image_height,image_width), interp= 'lanczos').astype('float32')
-			Pxx_prep = imresize(Pxx,(image_height,image_width), interp= 'lanczos').astype('float32')
+			Pxx_prep = imresize(np.log10(Pxx),(image_height,image_width), interp= 'lanczos').astype('float32')
+			#Pxx_prep = imresize(Pxx,(image_height,image_width), interp= 'lanczos').astype('float32')
 		else: #image size not changed
 			Pxx_prep = np.log(Pxx).astype('float32')
 		
@@ -210,22 +210,17 @@ def create_label_folders(data_folder, dataset_folder, file_name):
 		
 		for file_to_copy in files_names:
 			#print file_to_copy
-<<<<<<< HEAD
 			#print (os.path.join(data_folder, dataset_folder,file_to_copy+'.aiff'))
 			#Sometimes add +.aiff because it loads he file_names without extension
-=======
+
 			#print (os.path.join(data_folder, dataset_folder,file_to_copy))
 			#print file_to_copy[-5:]
->>>>>>> 5eda2171d1c6bea38203ca4b444903b50986264b
+
 			if file_to_copy[-5:]!= '.aiff':
 				file_to_copy= file_to_copy + '.aiff'
 			if os.path.isfile(os.path.join(data_folder, dataset_folder,file_to_copy)):
 				#print data_folder + file_to_copy
-<<<<<<< HEAD
-				shutil.copyfile(os.path.join(data_folder, dataset_folder,file_to_copy) , os.path.join(data_folder,dataset_folder,train_folder,file_to_copy+'.aiff') )
-=======
-				shutil.copyfile(os.path.join(data_folder, dataset_folder,file_to_copy) , os.path.join(data_folder,dataset_folder,train_folder,file_to_copy) )
->>>>>>> 5eda2171d1c6bea38203ca4b444903b50986264b
+				shutil.copyfile(os.path.join(data_folder, dataset_folder,file_to_copy) , os.path.join(data_folder,dataset_folder,train_folder,file_to_copy))
 	pass
 
 
