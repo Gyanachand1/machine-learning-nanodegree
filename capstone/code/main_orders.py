@@ -19,11 +19,15 @@ image_width = 23
 image_height = 32
 image_width = 32
 
-#create_label_folders('../whale-inputs/data/', 'train', 'train.csv') #run the first time to separate labels into subfolders and then be able to balance the datasets, then comment.
+create_label_folders('../whale-inputs/data/', 'train', 'train.csv') #run the first time to separate labels into subfolders and then be able to balance the datasets, then comment.
 
 
 train_folders = maybe_extract(os.path.abspath( '../whale-inputs/data/train/'))
-train_datasets = maybe_pickle(train_folders, 7000, False, image_height, image_width) #True to force repeating the processing. 
+<<<<<<< HEAD
+train_datasets = maybe_pickle(train_folders, 5000, True, image_height, image_width) #True to force repeating the processing. 
+=======
+train_datasets = maybe_pickle(train_folders, 7000, True , image_height, image_width) #True to force repeating the processing. 
+>>>>>>> 5eda2171d1c6bea38203ca4b444903b50986264b
 
 
 
