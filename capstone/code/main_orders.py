@@ -23,13 +23,7 @@ create_label_folders('../whale-inputs/data/', 'train', 'train.csv') #run the fir
 
 
 train_folders = maybe_extract(os.path.abspath( '../whale-inputs/data/train/'))
-<<<<<<< HEAD
-train_datasets = maybe_pickle(train_folders, 5000, True, image_height, image_width) #True to force repeating the processing. 
-=======
-train_datasets = maybe_pickle(train_folders, 7000, True , image_height, image_width) #True to force repeating the processing. 
->>>>>>> 5eda2171d1c6bea38203ca4b444903b50986264b
-
-
+train_datasets = maybe_pickle(train_folders, 7000, True, image_height, image_width) #True to force repeating the processing. 
 
 
 def make_arrays(nb_rows, img_size):
