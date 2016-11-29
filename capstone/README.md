@@ -1,6 +1,5 @@
-# Machine Learning Engineer Nanodegree
-## Specializations
-## Project: Capstone Proposal and Capstone Project
+# Machine Learning Engineer Nanodegree: Specializations
+### Project: Capstone Proposal and Capstone Project
 
 Author: Isabel María Villalba Jiménez
 -------------
