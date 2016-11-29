@@ -1,8 +1,8 @@
 ### Machine Learning Engineer Nanodegree: Specializations
 Right-Whale up-call recognition using ConvNets
 ===========
-#### Project: Capstone Proposal and Capstone Project
 ### Author: Isabel María Villalba Jiménez
+#### Project: Capstone Proposal and Capstone Project
 
 Data from competition [The Marinexplore and Cornell University Whale Detection Challenge](https://www.kaggle.com/c/whale-detection-challenge) should be extracted in the directory called 'whale-inputs'.
 
