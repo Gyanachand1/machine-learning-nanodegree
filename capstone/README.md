@@ -1,7 +1,7 @@
-## Machine Learning Engineer Nanodegree: Specializations
-### Project: Capstone Proposal and Capstone Project
+### Machine Learning Engineer Nanodegree: Specializations
+#### Project: Capstone Proposal and Capstone Project
 
-# Right-Whale up-call recognition using ConvNets
+Right-Whale up-call recognition using ConvNets
 ===========
 ### Author: Isabel María Villalba Jiménez
 
