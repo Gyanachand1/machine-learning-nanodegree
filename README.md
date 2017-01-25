@@ -1,13 +1,13 @@
-# Machile Learning Nanodegree Projects
+# Machine Learning Nanodegree Projects
 Author: mabelvj
 
-## Project 0: Titanic Survival Exploration
+## [Project 0: Titanic Survival Exploration](https://github.com/mabelvj/MLNP/tree/master/P0_titanic)
 
-## Project 1: Model Evaluation & Validation: Predicting Boston Housing Prices
+## [Project 1: Model Evaluation & Validation: Predicting Boston Housing Prices](https://github.com/mabelvj/MLNP/tree/master/P1_boston_housing)
 
-## Project 2: Supervised Learning: Building a Student Intervention System
+## [Project 2: Supervised Learning: Building a Student Intervention System](https://github.com/mabelvj/MLNP/tree/master/P2_student_intervention)cvcv
 
-## Project 3: Unsupervised Learning: Creating Customer Segments
+## [Project 3: Unsupervised Learning: Creating Customer Segments]()
 
 ## Project 4: Reinforcement Learning : Train a Smartcab How to Drive
 
