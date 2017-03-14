@@ -1,9 +1,6 @@
-# Project 5: Capstone
-
 Right-Whale up-call recognition using ConvNets
 ===========
-Author: Isabel María Villalba Jiménez
--------------
+### Author: Isabel María Villalba Jiménez
 
 Data from competition [The Marinexplore and Cornell University Whale Detection Challenge](https://www.kaggle.com/c/whale-detection-challenge) should be extracted in the directory called 'whale-inputs'.
 
