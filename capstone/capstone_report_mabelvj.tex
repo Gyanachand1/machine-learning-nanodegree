@@ -33,6 +33,7 @@
 \usepackage{url}
 %\usepackage{underscore}
 \usepackage[square, comma, numbers, sort]{natbib}
+%\usepackage[style=authoryear,backend=biber]{biblatex}
 \bibliographystyle{unsrtnat}
 
 
@@ -97,7 +98,7 @@ In order to do so, Cornell University's Bioacoustic Research Program, which has 
 
 \begin{figure}[htpb!]
 \centering
-\includegraphics[width= 0.6\textwidth]{images/kaggle_whale_detection_3}
+\includegraphics[width= 0.6\textwidth]{images/kaggle_whale_detection_3.png}
 \caption{Illustration of the deployment of the buoys in the sea while coexisting with whales \cite{kagglewhale} \label{img:setup}}
 \end{figure}  
 
@@ -113,7 +114,7 @@ Right whales make a half-dozen types of sounds, but the most characteristic one 
 \begin{figure}[htpb!]
 \centering
 \includegraphics[width= 0.3\textwidth]{images/sound_upcall_quiet.jpg}
-\caption{Spectrogram of a rigth whale up-call \cite{CornellWeb} \label{img:upcall}}
+\caption{Spectrogram of a right whale up-call \cite{CornellWeb} \label{img:upcall}}
 \end{figure}
 The goal of this work is to present a model capable of detecting the right whale's up-call, which is the most characteristic call of this specie, from the audio detected by the buoys deployed in the sea.
 
@@ -453,7 +454,7 @@ Finally, for fixed batch size and learning rate, the AUC has been calculated for
     \begin{subfigure}[r]{0.5\textwidth}
     		%\centering
     		\includegraphics[width=\linewidth]{{images/batch_size_5_lr_\lr00_val_auc_AWS_val_15}.png}
-    		\caption{  \label{img:regularization_2}}
+    		\caption{\label{img:regularization_2}}
     \end{subfigure}%
     \caption{AUC in the validation dataset for different regularization values, batch size = 5 and learning rate $\alpha$=\lr \label{img:regularization}}
 \end{figure} 

@@ -1,0 +1,130 @@
+\begin{thebibliography}{18}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Kaggle()]{kagglewhale}
+Kaggle.
+\newblock {The Marinexplore and Cornell University Whale Detection Challenge}.
+\newblock URL \url{https://www.kaggle.com/c/whale-detection-challenge}.
+
+\bibitem[{Cornell Bioacoustics Research Program}({\natexlab{a}})]{CornellWeb}
+{Cornell Bioacoustics Research Program}.
+\newblock {Right Whale's Up-Call, Cornell Bioacoustics Resear}, {\natexlab{a}}.
+\newblock URL \url{http://www.listenforwhales.org/page.aspx?pid=432}.
+
+\bibitem[{Cornell Bioacoustics Research Program}({\natexlab{b}})]{CornellWeb2}
+{Cornell Bioacoustics Research Program}.
+\newblock {More Right Whale calls}, {\natexlab{b}}.
+\newblock URL \url{http://www.listenforwhales.org/page.aspx?pid=442}.
+
+\bibitem[Nouri()]{Nouriblog}
+Daniel Nouri.
+\newblock {Using deep learning to listen for whales — Daniel Nouri's Blog}.
+\newblock URL
+  \url{http://danielnouri.org/notes/2014/01/10/using-deep-learning-to-listen-for-whales/}.
+
+\bibitem[the~free encyclopedia()]{wikiROC}
+Wikipedia; the~free encyclopedia.
+\newblock {Receiver Operating Characteristic (ROC)}.
+\newblock URL
+  \url{https://en.wikipedia.org/wiki/Receiver{\_}operating{\_}characteristic}.
+
+\bibitem[Wikiwand()]{wikiwand}
+Wikiwand.
+\newblock {Receiver operating characteristic}.
+\newblock URL
+  \url{http://www.wikiwand.com/it/Receiver{\_}operating{\_}characteristic}.
+
+\bibitem[LeCun et~al.(1998)LeCun, Bottou, Bengio, and Haffner]{Lecun98}
+Yann LeCun, L{\'{e}}on Bottou, Yoshua Bengio, and Patrick Haffner.
+\newblock {Gradient-based learning applied to document recognition}.
+\newblock \emph{Proc. IEEE}, 86\penalty0 (11):\penalty0 2278--2323, 1998.
+\newblock ISSN 00189219.
+\newblock \doi{10.1109/5.726791}.
+
+\bibitem[Krizhevsky et~al.(2012)Krizhevsky, Sutskever, and
+  Hinton]{Krizhevsky12}
+Alex Krizhevsky, Ilya Sutskever, and Geoffrey~E Hinton.
+\newblock {ImageNet Classification with Deep Convolutional Neural Networks}.
+\newblock \emph{Adv. Neural Inf. Process. Syst.}, pages 1--9, 2012.
+\newblock ISSN 10495258.
+\newblock \doi{http://dx.doi.org/10.1016/j.protcy.2014.09.007}.
+
+\bibitem[McDonald and Moore(2002)]{McDonald2002}
+M~A McDonald and S~E Moore.
+\newblock {Calls recorded from North Pacific right whales
+  ({\textless}i{\textgreater}Eubalaena japonica{\textless}/i{\textgreater}) in
+  the eastern Bering Sea}.
+\newblock \emph{J. Cetacean Res. Manag.}, 4\penalty0 (3):\penalty0 261--266,
+  2002.
+\newblock ISSN 1561-0713.
+\newblock URL \url{http://www.afsc.noaa.gov/nmml/PDF/rightcalls.pdf}.
+
+\bibitem[Esfahanian et~al.(2015)Esfahanian, Zhuang, Erdol, Gerstein, Science,
+  and Raton]{Esfahanian2015}
+Mahdi Esfahanian, Hanqi Zhuang, Nurgun Erdol, Edmund Gerstein, Computer
+  Science, and Boca Raton.
+\newblock {Comparison of Two Methods for Detection of North Atlantic Right}.
+\newblock \emph{Ieee}, pages 559--563, 2015.
+
+\bibitem[{Karpathy Andrej}({\natexlab{a}})]{cs231convnets}
+Johnson~Justin {Karpathy Andrej}.
+\newblock {CS231n Convolutional Neural Networks for Visual Recognition},
+  {\natexlab{a}}.
+\newblock URL \url{http://cs231n.github.io/}.
+
+\bibitem[Krizhevsky and Hinton(2010)]{Krizhevsky2010}
+Alex Krizhevsky and G~Hinton.
+\newblock {Convolutional deep belief networks on cifar-10}.
+\newblock \emph{Unpubl. Manuscr.}, pages 1--9, 2010.
+\newblock URL
+  \url{http://scholar.google.com/scholar?hl=en{\&}btnG=Search{\&}q=intitle:Convolutional+Deep+Belief+Networks+on+CIFAR-10{\#}0}.
+
+\bibitem[{Karpathy Andrej}({\natexlab{b}})]{cs231preprocessing}
+Johnson~Justin {Karpathy Andrej}.
+\newblock {CS231n Convolutional Neural Networks for Visual Recognition},
+  {\natexlab{b}}.
+\newblock URL \url{http://cs231n.github.io/neural-networks-2/}.
+
+\bibitem[skl()]{sklearn_standard_scaler}
+{sklearn.preprocessing.StandardScaler — scikit-learn 0.18 documentation}.
+\newblock URL
+  \url{http://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html}.
+
+\bibitem[Ruder(2016)]{ruderweb}
+Sebastian Ruder.
+\newblock {An overview of gradient descent optimization algorithms}.
+\newblock sep 2016.
+\newblock URL \url{http://arxiv.org/abs/1609.04747
+  http://sebastianruder.com/optimizing-gradient-descent/index.html{\#}gradientdescentvariants}.
+
+\bibitem[Udacity()]{deepgithub}
+Udacity.
+\newblock {Deep Learning Course Repository}.
+\newblock URL
+  \url{https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/udacity}.
+
+\bibitem[Szegedy et~al.(2015)Szegedy, Liu, Jia, Sermanet, Reed, Anguelov,
+  Erhan, Vanhoucke, and Rabinovich]{Szegedy16}
+Christian Szegedy, Wei Liu, Yangqing Jia, Pierre Sermanet, Scott Reed, Dragomir
+  Anguelov, Dumitru Erhan, Vincent Vanhoucke, and Andrew Rabinovich.
+\newblock {Going deeper with convolutions}.
+\newblock In \emph{Proc. IEEE Comput. Soc. Conf. Comput. Vis. Pattern
+  Recognit.}, volume 07-12-June, pages 1--9, sep 2015.
+\newblock ISBN 9781467369640.
+\newblock \doi{10.1109/CVPR.2015.7298594}.
+\newblock URL \url{http://arxiv.org/abs/1409.4842}.
+
+\bibitem[Ioffe and Szegedy(2015)]{szegedy15batch}
+Sergey Ioffe and Christian Szegedy.
+\newblock {Batch Normalization: Accelerating Deep Network Training by Reducing
+  Internal Covariate Shift}.
+\newblock \emph{arXiv:1502.03167}, pages 1--11, 2015.
+\newblock ISSN 0717-6163.
+\newblock \doi{10.1007/s13398-014-0173-7.2}.
+\newblock URL \url{http://arxiv.org/abs/1502.03167}.
+
+\end{thebibliography}
