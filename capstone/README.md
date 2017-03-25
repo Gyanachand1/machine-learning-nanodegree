@@ -12,4 +12,4 @@ Data from competition [The Marinexplore and Cornell University Whale Detection C
 
 - Then go to LeNet-5 and run it.
 
-Capstone report file: **capstone\_report\_mabelvj.pdf**
+Capstone report file: **(capstone\_report\_mabelvj.pdf](https://github.com/mabelvj/MLNP/blob/master/capstone/capstone_report_mabelvj.pdf)**
